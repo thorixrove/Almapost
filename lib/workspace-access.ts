@@ -1,9 +1,10 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { workspaceOwnerSelect } from "@/lib/billing";
+import { cache } from "react";
 
 
-export async function canAccessWorkspace(workspaceId: string) {
+export const canAccessWorkspace = cache(async (workspaceId: string) => {
     const { userId, orgId } = await auth()
     if (!userId) return false
 
@@ -19,4 +20,4 @@ export async function canAccessWorkspace(workspaceId: string) {
     const clerk = await clerkClient()
     const { data: memberships } = await clerk.users.getOrganizationMembershipList({ userId, limit: 100 })
     return memberships.some((m) => m.organization.id === workspace.clerkOrgId)
-}
+})
