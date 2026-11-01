@@ -15,6 +15,7 @@ import { CanvasEditor } from "./_components/CanvasEditorLoader"
 import { AgentToggleButton } from "./_components/AgentToggleButton";
 import { ShareDialog } from "./_components/ShareDialog";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { VersionHistoryDialog } from "./_components/VersionHistoryDialog"
 
 type ViewMode = "doc" | "canvas" | "both";
 
@@ -85,6 +86,7 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
 
                     <div className="flex flex-1 items-center justify-end gap-2">
                         <PlanButton upgradeOnlyWhenOut />
+                        <VersionHistoryDialog workspaceId={id} />
                         <ShareDialog
                             workspaceId={id}
                             workspaceName={workspace.name}

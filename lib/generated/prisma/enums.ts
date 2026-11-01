@@ -17,3 +17,12 @@ export const WorkspaceStatus = {
 } as const
 
 export type WorkspaceStatus = (typeof WorkspaceStatus)[keyof typeof WorkspaceStatus]
+
+
+export const VersionKind = {
+  MANUAL: 'MANUAL',
+  AUTO: 'AUTO',
+  BEFORE_RESTORE: 'BEFORE_RESTORE'
+} as const
+
+export type VersionKind = (typeof VersionKind)[keyof typeof VersionKind]

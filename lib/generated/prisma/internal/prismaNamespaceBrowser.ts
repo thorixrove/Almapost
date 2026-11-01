@@ -55,7 +55,8 @@ export const ModelName = {
   Workspace: 'Workspace',
   Doc: 'Doc',
   Canvas: 'Canvas',
-  AgentPrompt: 'AgentPrompt'
+  AgentPrompt: 'AgentPrompt',
+  WorkspaceVersion: 'WorkspaceVersion'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -135,6 +136,22 @@ export const AgentPromptScalarFieldEnum = {
 } as const
 
 export type AgentPromptScalarFieldEnum = (typeof AgentPromptScalarFieldEnum)[keyof typeof AgentPromptScalarFieldEnum]
+
+
+export const WorkspaceVersionScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  kind: 'kind',
+  label: 'label',
+  preview: 'preview',
+  shapeCount: 'shapeCount',
+  docContent: 'docContent',
+  canvasContent: 'canvasContent',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkspaceVersionScalarFieldEnum = (typeof WorkspaceVersionScalarFieldEnum)[keyof typeof WorkspaceVersionScalarFieldEnum]
 
 
 export const SortOrder = {

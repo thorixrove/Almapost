@@ -17,6 +17,14 @@ enum WorkspaceStatus {
   DONE
 }
 
+// Where a saved version came from. Only MANUAL ones are kept forever; the other two are pruned
+// to the newest few per workspace (see actions/version.ts).
+enum VersionKind {
+  MANUAL
+  AUTO
+  BEFORE_RESTORE
+}
+
 model User {
   id        String   @id @default(cuid())
   clerkId   String   @unique
@@ -30,6 +38,7 @@ model User {
   // not here, so this is just "who to blame/bill" rather than an access-control source of truth.
   createdWorkspaces Workspace[]
   agentPrompts      AgentPrompt[]
+  createdVersions   WorkspaceVersion[]
 }
 
 model Workspace {
@@ -56,6 +65,7 @@ model Workspace {
   doc          Doc?
   canvas       Canvas?
   agentPrompts AgentPrompt[]
+  versions     WorkspaceVersion[]
 
   @@index([creatorId])
   @@index([clerkOrgId])
@@ -100,4 +110,28 @@ model AgentPrompt {
   workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
 
   @@index([ownerId, createdAt])
+}
+
+
+// A saved copy of a workspace's doc and canvas that can be restored later. Restoring never reads
+// Yjs history: it pushes this content back through the live editors, so collaborators see it too.
+model WorkspaceVersion {
+  id            String      @id @default(cuid())
+  workspaceId   String
+  kind          VersionKind
+  // Name typed by the user; null for automatic versions.
+  label         String?
+  // Short text excerpt and shape count, so the history list doesn't have to load full content.
+  preview       String?
+  shapeCount    Int         @default(0)
+  // BlockNote block JSON and tldraw snapshot, copied from Doc.content / Canvas.content.
+  docContent    Json?
+  canvasContent Json?
+  createdById   String?
+  createdAt     DateTime    @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, createdAt])
 }
