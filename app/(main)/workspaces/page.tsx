@@ -3,16 +3,24 @@ import { Plus } from "lucide-react";
 import { checkUser } from "@/actions/check-user";
 import { prisma } from "@/lib/prisma";
 import { getWorkspaceScope } from "@/lib/workspace-scope";
+import { parseFilterParams } from "@/lib/workspace-filter";
 import { withLastActivity, workspaceCardSelect } from "@/lib/workspace-status";
 import { Button } from "@/components/ui/button";
 import { WorkspaceDialog } from "@/components/WorkspaceDialog";
 import { WorkspaceBoard } from "./_components/WorkspaceBoard";
 
-export default async function WorkspacesPage() {
-  const user = await checkUser();
-  if (!user) redirect("/sign-in");
+export default async function WorkspacesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const user = await checkUser()
+  if (!user) redirect("/sign-in")
+
+  const { query, statuses } = parseFilterParams(await searchParams)
 
   const { orgName, where } = await getWorkspaceScope(user.id);
+  
   const workspaces = await prisma.workspace.findMany({
     where,
     select: { ...workspaceCardSelect, position: true },
@@ -41,7 +49,11 @@ export default async function WorkspacesPage() {
           No workspaces yet. Start one from the dashboard or with New workspace.
         </p>
       ) : (
-        <WorkspaceBoard workspaces={workspaces.map(withLastActivity)} />
+        <WorkspaceBoard
+          workspaces={workspaces.map(withLastActivity)}
+          initialQuery={query}
+          initialStatuses={statuses}
+        />
       )}
     </div>
   );
