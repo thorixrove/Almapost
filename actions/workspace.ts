@@ -4,11 +4,11 @@ import { randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
 import { checkUser } from "@/actions/check-user";
-import { canAccessWorkspace } from "@/lib/workspace-access";
+import { canAccessWorkspace, canDeleteWorkspace } from "@/lib/workspace-access";
 import { scopeWhere } from "@/lib/workspace-scope";
 import { prisma } from "@/lib/prisma";
 import { WorkspaceStatus } from "@/lib/generated/prisma/enums";
-import { getEntitlements, getWorkspaceOwnerId, workspaceOwnerSelect } from "@/lib/billing";
+import { getEntitlements, getWorkspaceOwnerId } from "@/lib/billing";
 import { FREE_WORKSPACE_LIMIT, type LimitError } from "@/lib/plan-limits";
 
 function revalidateWorkspaceLists() {
@@ -77,23 +77,18 @@ export async function updateWorkspace(workspaceId: string, name: string, descrip
     return workspace
 }
 
+// Memindahkan workspace ke tempat sampah (bisa dipulihkan 30 hari). Penghapusan permanen ada di actions/trash.ts.
 export async function deleteWorkspace(workspaceId: string) {
-    const { userId, orgId, orgRole } = await auth()
-    if (!userId || !(await canAccessWorkspace(workspaceId))) throw new Error("Workspace not found")
-
-    const workspace = await prisma.workspace.findUniqueOrThrow({
-        where: { id: workspaceId },
-        select: workspaceOwnerSelect
-    })
-    const isCreator = workspace.creator.clerkId === userId
-    const isOrgAdmin = orgRole === "org:admin" && workspace.clerkOrgId == orgId
-    if (!isCreator && !isOrgAdmin) {
+    if (!(await canAccessWorkspace(workspaceId))) throw new Error("Workspace not found")
+    if (!(await canDeleteWorkspace(workspaceId))) {
         throw new Error("Only the creator or an org admin can delete this workspace");
     }
 
-    await prisma.workspace.delete({ where: { id: workspaceId } })
-    revalidateWorkspaceLists
+    await prisma.workspace.update({ where: { id: workspaceId }, data: { deletedAt: new Date() } })
+    revalidateWorkspaceLists()
+    revalidatePath("/workspaces/trash")
 }
+
 
 export async function moveWorkspace(workspaceId: string, status: WorkspaceStatus, position: number) {
     if (!Object.values(WorkspaceStatus).includes(status) || !Number.isFinite(position)) {

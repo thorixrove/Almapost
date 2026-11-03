@@ -97,6 +97,7 @@ export const WorkspaceScalarFieldEnum = {
   status: 'status',
   position: 'position',
   shareToken: 'shareToken',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

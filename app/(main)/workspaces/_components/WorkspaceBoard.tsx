@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { DragDropContext, Draggable, Droppable, type DropResult } from "@hello-pangea/dnd";
 import { deleteWorkspace, moveWorkspace } from "@/actions/workspace";
+import { restoreWorkspace } from "@/actions/trash";
+import { TRASH_RETENTION_DAYS } from "@/lib/trash";
 import type { WorkspaceStatus } from "@/lib/generated/prisma/enums";
 import { WORKSPACE_STATUSES } from "@/lib/workspace-status";
 import { buildFilterSearch, matchesQuery } from "@/lib/workspace-filter";
@@ -12,7 +14,7 @@ import { WorkspaceDialog } from "@/components/WorkspaceDialog";
 import { WorkspaceCard, type WorkspaceCardData } from "@/components/WorkspaceCard";
 import { WorkspaceFilterBar } from "./WorkspaceFilterBar";
 import { Button } from "@/components/ui/button";
-
+import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -94,12 +96,8 @@ export function WorkspaceBoard({
   }, [query, statuses])
 
 
-
-
-
-
-
   // `selected` outlives the open flag, so dialog text doesn't blank out during the close animation.
+  const router = useRouter()
   const [selected, setSelected] = useState<BoardWorkspace | null>(null);
   const [openDialog, setOpenDialog] = useState<"edit" | "delete" | null>(null);
 
@@ -121,11 +119,25 @@ export function WorkspaceBoard({
 
     try {
       await deleteWorkspace(id);
+      toast("Moved to trash", { action: { label: "Undo", onClick: () => undoTrash(id) } })
     } catch (err) {
       setItems(previous);
       toast.error(err instanceof Error ? err.message : "Gagal menghapus workspace");
     }
   };
+
+  const undoTrash = async (id: string) => {
+    try {
+      const result = await restoreWorkspace(id)
+      if ("limit" in result) {
+        toast.error("Couldn't restore it: you've reached the workspace limit for your plan.")
+        return
+      }
+      router.refresh()
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Couldn't restore workspace")
+    }
+  }
 
   const handleDragEnd = async ({ draggableId, source, destination }: DropResult) => {
     if (!destination) return;
@@ -218,7 +230,7 @@ export function WorkspaceBoard({
                                     </DropdownMenuItem>
                                     <DropdownMenuItem variant="destructive" onSelect={() => openFor(workspace, "delete")}>
                                       <Trash2 className="size-4" />
-                                      Delete
+                                      Move to trash
                                     </DropdownMenuItem>
                                   </DropdownMenuContent>
                                 </DropdownMenu>
@@ -250,15 +262,16 @@ export function WorkspaceBoard({
       <AlertDialog open={openDialog === "delete"} onOpenChange={(open) => !open && setOpenDialog(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete &ldquo;{selected?.name}&rdquo;?</AlertDialogTitle>
+            <AlertDialogTitle>Move &ldquo;{selected?.name}&rdquo; to the trash?</AlertDialogTitle>
             <AlertDialogDescription>
-              This permanently deletes the workspace, including its doc and canvas. It can&apos;t be undone.
+              It disappears from the board and its share link stops working. You can restore it from the trash for{" "}
+              {TRASH_RETENTION_DAYS} days, after which it&apos;s deleted permanently.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={handleDelete}>
-              Delete
+              Move to trash
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -56,6 +56,7 @@ model Workspace {
   position    Float           @default(0)
   // Public read-only link token; null means sharing is off. Resetting it kills old links.
   shareToken  String?         @unique
+  deletedAt   DateTime?
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
