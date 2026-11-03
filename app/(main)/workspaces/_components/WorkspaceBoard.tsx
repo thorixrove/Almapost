@@ -230,7 +230,7 @@ export function WorkspaceBoard({
                                     </DropdownMenuItem>
                                     <DropdownMenuItem variant="destructive" onSelect={() => openFor(workspace, "delete")}>
                                       <Trash2 className="size-4" />
-                                      Move to trash
+                                      Go to trash
                                     </DropdownMenuItem>
                                   </DropdownMenuContent>
                                 </DropdownMenu>
@@ -271,7 +271,7 @@ export function WorkspaceBoard({
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={handleDelete}>
-              Move to trash
+              Go to trash
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
