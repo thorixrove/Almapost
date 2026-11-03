@@ -2,9 +2,12 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { BookmarkPlus, Copy, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { DragDropContext, Draggable, Droppable, type DropResult } from "@hello-pangea/dnd";
 import { deleteWorkspace, moveWorkspace } from "@/actions/workspace";
+import { duplicateWorkspace, saveAsTemplate } from "@/actions/template";
+import { useUpgradeDialog } from "@/components/UpgradeDialog";
+import { UPGRADE_REASONS } from "@/lib/plan-limits";
 import { restoreWorkspace } from "@/actions/trash";
 import { TRASH_RETENTION_DAYS } from "@/lib/trash";
 import type { WorkspaceStatus } from "@/lib/generated/prisma/enums";
@@ -98,6 +101,7 @@ export function WorkspaceBoard({
 
   // `selected` outlives the open flag, so dialog text doesn't blank out during the close animation.
   const router = useRouter()
+  const openUpgrade = useUpgradeDialog();
   const [selected, setSelected] = useState<BoardWorkspace | null>(null);
   const [openDialog, setOpenDialog] = useState<"edit" | "delete" | null>(null);
 
@@ -136,6 +140,32 @@ export function WorkspaceBoard({
       router.refresh()
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Couldn't restore workspace")
+    }
+  }
+
+  const handleDuplicate = async (workspace: BoardWorkspace) => {
+    try {
+      const result = await duplicateWorkspace(workspace.id)
+      if ("limit" in result) return openUpgrade(UPGRADE_REASONS[result.limit])
+      toast.success(`Duplicated “${workspace.name}”`, {
+        action: { label: "Open", onClick: () => router.push(`/workspace/${result.workspace.id}`) },
+      })
+      router.refresh()
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Couldn't duplicate workspace")
+    }
+  }
+
+  const handleSaveAsTemplate = async (workspace: BoardWorkspace) => {
+    try {
+      const result = await saveAsTemplate(workspace.id)
+      if ("full" in result) {
+        toast.error("You've reached the limit of saved templates. Delete one when creating a workspace.")
+        return
+      }
+      toast.success(`Saved “${result.template.name}” as a template`)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Couldn't save template")
     }
   }
 
@@ -227,6 +257,14 @@ export function WorkspaceBoard({
                                     <DropdownMenuItem onSelect={() => openFor(workspace, "edit")}>
                                       <Pencil className="size-4" />
                                       Edit
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => handleDuplicate(workspace)}>
+                                      <Copy className="siex-4" />
+                                      Duplicate
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => handleSaveAsTemplate(workspace)}>
+                                      <BookmarkPlus className="size-4" />
+                                      Save as template
                                     </DropdownMenuItem>
                                     <DropdownMenuItem variant="destructive" onSelect={() => openFor(workspace, "delete")}>
                                       <Trash2 className="size-4" />

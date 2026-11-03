@@ -39,6 +39,7 @@ model User {
   createdWorkspaces Workspace[]
   agentPrompts      AgentPrompt[]
   createdVersions   WorkspaceVersion[]
+  createdTemplates  WorkspaceTemplate[]
 }
 
 model Workspace {
@@ -96,8 +97,6 @@ model Canvas {
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
-// One row per prompt a user sends to the agent, counted per owner each month for usage limits.
-// Rows outlive their workspace (SetNull), so deleting a workspace can't reset usage.
 model AgentPrompt {
   id          String   @id @default(cuid())
   // Who the prompt counts against: the workspace's Clerk org id, or the Clerk user id for a
@@ -114,8 +113,6 @@ model AgentPrompt {
 }
 
 
-// A saved copy of a workspace's doc and canvas that can be restored later. Restoring never reads
-// Yjs history: it pushes this content back through the live editors, so collaborators see it too.
 model WorkspaceVersion {
   id            String      @id @default(cuid())
   workspaceId   String
@@ -135,4 +132,23 @@ model WorkspaceVersion {
   createdBy User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
 
   @@index([workspaceId, createdAt])
+}
+
+
+model WorkspaceTemplate {
+  id            String   @id @default(cuid())
+  name          String
+  description   String?
+  // Same ownership rule as workspaces: an organization's shared templates, or a solo user's own.
+  clerkOrgId    String?
+  creatorId     String
+  // BlockNote block JSON and tldraw snapshot, copied from Doc.content / Canvas.content.
+  docContent    Json?
+  canvasContent Json?
+  createdAt     DateTime @default(now())
+
+  creator User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@index([clerkOrgId])
+  @@index([creatorId])
 }

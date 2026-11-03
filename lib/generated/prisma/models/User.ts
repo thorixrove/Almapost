@@ -201,6 +201,7 @@ export type UserWhereInput = {
   createdWorkspaces?: Prisma.WorkspaceListRelationFilter
   agentPrompts?: Prisma.AgentPromptListRelationFilter
   createdVersions?: Prisma.WorkspaceVersionListRelationFilter
+  createdTemplates?: Prisma.WorkspaceTemplateListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -214,6 +215,7 @@ export type UserOrderByWithRelationInput = {
   createdWorkspaces?: Prisma.WorkspaceOrderByRelationAggregateInput
   agentPrompts?: Prisma.AgentPromptOrderByRelationAggregateInput
   createdVersions?: Prisma.WorkspaceVersionOrderByRelationAggregateInput
+  createdTemplates?: Prisma.WorkspaceTemplateOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -230,6 +232,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdWorkspaces?: Prisma.WorkspaceListRelationFilter
   agentPrompts?: Prisma.AgentPromptListRelationFilter
   createdVersions?: Prisma.WorkspaceVersionListRelationFilter
+  createdTemplates?: Prisma.WorkspaceTemplateListRelationFilter
 }, "id" | "clerkId" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -269,6 +272,7 @@ export type UserCreateInput = {
   createdWorkspaces?: Prisma.WorkspaceCreateNestedManyWithoutCreatorInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutUserInput
   createdVersions?: Prisma.WorkspaceVersionCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -282,6 +286,7 @@ export type UserUncheckedCreateInput = {
   createdWorkspaces?: Prisma.WorkspaceUncheckedCreateNestedManyWithoutCreatorInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutUserInput
   createdVersions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUpdateInput = {
@@ -295,6 +300,7 @@ export type UserUpdateInput = {
   createdWorkspaces?: Prisma.WorkspaceUpdateManyWithoutCreatorNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutUserNestedInput
   createdVersions?: Prisma.WorkspaceVersionUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -308,6 +314,7 @@ export type UserUncheckedUpdateInput = {
   createdWorkspaces?: Prisma.WorkspaceUncheckedUpdateManyWithoutCreatorNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutUserNestedInput
   createdVersions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -436,6 +443,20 @@ export type UserUpdateOneWithoutCreatedVersionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedVersionsInput, Prisma.UserUpdateWithoutCreatedVersionsInput>, Prisma.UserUncheckedUpdateWithoutCreatedVersionsInput>
 }
 
+export type UserCreateNestedOneWithoutCreatedTemplatesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedTemplatesInput, Prisma.UserUncheckedCreateWithoutCreatedTemplatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedTemplatesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCreatedTemplatesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedTemplatesInput, Prisma.UserUncheckedCreateWithoutCreatedTemplatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedTemplatesInput
+  upsert?: Prisma.UserUpsertWithoutCreatedTemplatesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedTemplatesInput, Prisma.UserUpdateWithoutCreatedTemplatesInput>, Prisma.UserUncheckedUpdateWithoutCreatedTemplatesInput>
+}
+
 export type UserCreateWithoutCreatedWorkspacesInput = {
   id?: string
   clerkId: string
@@ -446,6 +467,7 @@ export type UserCreateWithoutCreatedWorkspacesInput = {
   updatedAt?: Date | string
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutUserInput
   createdVersions?: Prisma.WorkspaceVersionCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedWorkspacesInput = {
@@ -458,6 +480,7 @@ export type UserUncheckedCreateWithoutCreatedWorkspacesInput = {
   updatedAt?: Date | string
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutUserInput
   createdVersions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedWorkspacesInput = {
@@ -486,6 +509,7 @@ export type UserUpdateWithoutCreatedWorkspacesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutUserNestedInput
   createdVersions?: Prisma.WorkspaceVersionUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedWorkspacesInput = {
@@ -498,6 +522,7 @@ export type UserUncheckedUpdateWithoutCreatedWorkspacesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutUserNestedInput
   createdVersions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutAgentPromptsInput = {
@@ -510,6 +535,7 @@ export type UserCreateWithoutAgentPromptsInput = {
   updatedAt?: Date | string
   createdWorkspaces?: Prisma.WorkspaceCreateNestedManyWithoutCreatorInput
   createdVersions?: Prisma.WorkspaceVersionCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutAgentPromptsInput = {
@@ -522,6 +548,7 @@ export type UserUncheckedCreateWithoutAgentPromptsInput = {
   updatedAt?: Date | string
   createdWorkspaces?: Prisma.WorkspaceUncheckedCreateNestedManyWithoutCreatorInput
   createdVersions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutAgentPromptsInput = {
@@ -550,6 +577,7 @@ export type UserUpdateWithoutAgentPromptsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdWorkspaces?: Prisma.WorkspaceUpdateManyWithoutCreatorNestedInput
   createdVersions?: Prisma.WorkspaceVersionUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAgentPromptsInput = {
@@ -562,6 +590,7 @@ export type UserUncheckedUpdateWithoutAgentPromptsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdWorkspaces?: Prisma.WorkspaceUncheckedUpdateManyWithoutCreatorNestedInput
   createdVersions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutCreatedVersionsInput = {
@@ -574,6 +603,7 @@ export type UserCreateWithoutCreatedVersionsInput = {
   updatedAt?: Date | string
   createdWorkspaces?: Prisma.WorkspaceCreateNestedManyWithoutCreatorInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutUserInput
+  createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedVersionsInput = {
@@ -586,6 +616,7 @@ export type UserUncheckedCreateWithoutCreatedVersionsInput = {
   updatedAt?: Date | string
   createdWorkspaces?: Prisma.WorkspaceUncheckedCreateNestedManyWithoutCreatorInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutUserInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedVersionsInput = {
@@ -614,6 +645,7 @@ export type UserUpdateWithoutCreatedVersionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdWorkspaces?: Prisma.WorkspaceUpdateManyWithoutCreatorNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutUserNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedVersionsInput = {
@@ -626,6 +658,75 @@ export type UserUncheckedUpdateWithoutCreatedVersionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdWorkspaces?: Prisma.WorkspaceUncheckedUpdateManyWithoutCreatorNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutUserNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserCreateWithoutCreatedTemplatesInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name?: string | null
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdWorkspaces?: Prisma.WorkspaceCreateNestedManyWithoutCreatorInput
+  agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutUserInput
+  createdVersions?: Prisma.WorkspaceVersionCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutCreatedTemplatesInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name?: string | null
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdWorkspaces?: Prisma.WorkspaceUncheckedCreateNestedManyWithoutCreatorInput
+  agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutUserInput
+  createdVersions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutCreatedTemplatesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedTemplatesInput, Prisma.UserUncheckedCreateWithoutCreatedTemplatesInput>
+}
+
+export type UserUpsertWithoutCreatedTemplatesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedTemplatesInput, Prisma.UserUncheckedUpdateWithoutCreatedTemplatesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedTemplatesInput, Prisma.UserUncheckedCreateWithoutCreatedTemplatesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedTemplatesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedTemplatesInput, Prisma.UserUncheckedUpdateWithoutCreatedTemplatesInput>
+}
+
+export type UserUpdateWithoutCreatedTemplatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdWorkspaces?: Prisma.WorkspaceUpdateManyWithoutCreatorNestedInput
+  agentPrompts?: Prisma.AgentPromptUpdateManyWithoutUserNestedInput
+  createdVersions?: Prisma.WorkspaceVersionUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedTemplatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdWorkspaces?: Prisma.WorkspaceUncheckedUpdateManyWithoutCreatorNestedInput
+  agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutUserNestedInput
+  createdVersions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -637,12 +738,14 @@ export type UserCountOutputType = {
   createdWorkspaces: number
   agentPrompts: number
   createdVersions: number
+  createdTemplates: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdWorkspaces?: boolean | UserCountOutputTypeCountCreatedWorkspacesArgs
   agentPrompts?: boolean | UserCountOutputTypeCountAgentPromptsArgs
   createdVersions?: boolean | UserCountOutputTypeCountCreatedVersionsArgs
+  createdTemplates?: boolean | UserCountOutputTypeCountCreatedTemplatesArgs
 }
 
 /**
@@ -676,6 +779,13 @@ export type UserCountOutputTypeCountCreatedVersionsArgs<ExtArgs extends runtime.
   where?: Prisma.WorkspaceVersionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkspaceTemplateWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -688,6 +798,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdWorkspaces?: boolean | Prisma.User$createdWorkspacesArgs<ExtArgs>
   agentPrompts?: boolean | Prisma.User$agentPromptsArgs<ExtArgs>
   createdVersions?: boolean | Prisma.User$createdVersionsArgs<ExtArgs>
+  createdTemplates?: boolean | Prisma.User$createdTemplatesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -726,6 +837,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdWorkspaces?: boolean | Prisma.User$createdWorkspacesArgs<ExtArgs>
   agentPrompts?: boolean | Prisma.User$agentPromptsArgs<ExtArgs>
   createdVersions?: boolean | Prisma.User$createdVersionsArgs<ExtArgs>
+  createdTemplates?: boolean | Prisma.User$createdTemplatesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -737,6 +849,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdWorkspaces: Prisma.$WorkspacePayload<ExtArgs>[]
     agentPrompts: Prisma.$AgentPromptPayload<ExtArgs>[]
     createdVersions: Prisma.$WorkspaceVersionPayload<ExtArgs>[]
+    createdTemplates: Prisma.$WorkspaceTemplatePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1143,6 +1256,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   createdWorkspaces<T extends Prisma.User$createdWorkspacesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdWorkspacesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   agentPrompts<T extends Prisma.User$agentPromptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$agentPromptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentPromptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdVersions<T extends Prisma.User$createdVersionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdVersionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkspaceVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdTemplates<T extends Prisma.User$createdTemplatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkspaceTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1641,6 +1755,30 @@ export type User$createdVersionsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.WorkspaceVersionScalarFieldEnum | Prisma.WorkspaceVersionScalarFieldEnum[]
+}
+
+/**
+ * User.createdTemplates
+ */
+export type User$createdTemplatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkspaceTemplate
+   */
+  select?: Prisma.WorkspaceTemplateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkspaceTemplate
+   */
+  omit?: Prisma.WorkspaceTemplateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkspaceTemplateInclude<ExtArgs> | null
+  where?: Prisma.WorkspaceTemplateWhereInput
+  orderBy?: Prisma.WorkspaceTemplateOrderByWithRelationInput | Prisma.WorkspaceTemplateOrderByWithRelationInput[]
+  cursor?: Prisma.WorkspaceTemplateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkspaceTemplateScalarFieldEnum | Prisma.WorkspaceTemplateScalarFieldEnum[]
 }
 
 /**

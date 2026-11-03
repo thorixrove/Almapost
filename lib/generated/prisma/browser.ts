@@ -47,3 +47,8 @@ export type AgentPrompt = Prisma.AgentPromptModel
  * 
  */
 export type WorkspaceVersion = Prisma.WorkspaceVersionModel
+/**
+ * Model WorkspaceTemplate
+ * 
+ */
+export type WorkspaceTemplate = Prisma.WorkspaceTemplateModel
