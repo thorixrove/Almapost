@@ -264,7 +264,7 @@ export function WorkspaceBoard({
                                     </DropdownMenuItem>
                                     <DropdownMenuItem onSelect={() => handleSaveAsTemplate(workspace)}>
                                       <BookmarkPlus className="size-4" />
-                                      Save as template
+                                      Template
                                     </DropdownMenuItem>
                                     <DropdownMenuItem variant="destructive" onSelect={() => openFor(workspace, "delete")}>
                                       <Trash2 className="size-4" />
