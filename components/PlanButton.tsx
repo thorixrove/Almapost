@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { SubscriptionDetailsButton, useSubscription } from "@clerk/nextjs/experimental";
-import { getActivePromptUsage } from "@/actions/usage";
 import { useUpgradeDialog } from "@/components/UpgradeDialog";
 
 
 
-type Usage = Awaited<ReturnType<typeof getActivePromptUsage>>
+
+type Usage = { used: number; limit: number; isPaid: boolean } | null
 
 const USAGE_CHANGED_EVENT = "almapost:prompt-usage-changed"
 
@@ -25,7 +25,11 @@ export function PlanButton({ upgradeOnlyWhenOut = false }: { upgradeOnlyWhenOut?
 
     useEffect(() => {
         let cancelled = false
-        const load = () => getActivePromptUsage().then((next) => !cancelled && setUsage(next))
+        const load = () =>
+            fetch("/api/usage", { cache: "no-store" })
+                .then((res) => (res.ok ? res.json() : null))
+                .then((next: Usage) => !cancelled && setUsage(next))
+                .catch(() => { })
         load()
         window.addEventListener(USAGE_CHANGED_EVENT, load)
         return () => {

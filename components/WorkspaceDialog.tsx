@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createWorkspace, updateWorkspace } from "@/actions/workspace";
+import { createWorkspaceFromTemplate } from "@/actions/template";
+import { TemplatePicker } from "@/components/TemplatePicker";
 import { useUpgradeDialog } from "@/components/UpgradeDialog";
 import { UPGRADE_REASONS } from "@/lib/plan-limits";
 import { useFetch } from "@/hooks/use-fetch";
@@ -41,7 +43,7 @@ export function WorkspaceDialog({
             {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{workspace ? "Edit workspacee" : "Create a workspace"}</DialogTitle>
+                    <DialogTitle>{workspace ? "Edit workspace" : "Create a workspace"}</DialogTitle>
                 </DialogHeader>
                 <WorkspaceForm workspace={workspace} onDone={() => setOpen(false)} />
             </DialogContent>
@@ -51,11 +53,15 @@ export function WorkspaceDialog({
 
 function WorkspaceForm({ workspace, onDone }: { workspace?: EditableWorkspace; onDone: () => void }) {
     const [name, setName] = useState(workspace?.name ?? "")
+
     const [description, setDescription] = useState(workspace?.description ?? "")
+    const [templateId, setTemplateId] = useState<string | null>(null)
     const router = useRouter()
     const { fn: createWorkspaceFn, loading: creating } = useFetch(createWorkspace)
     const { fn: updateWorkspaceFn, loading: updating } = useFetch(updateWorkspace)
-    const loading = creating || updating
+    const { fn: createFromTemplateFn, loading: createFromTemplate } = useFetch(createWorkspaceFromTemplate)
+    const loading = creating || updating || createFromTemplate
+
     const openUpgrade = useUpgradeDialog()
 
     const handleSubmit = async () => {
@@ -64,7 +70,9 @@ function WorkspaceForm({ workspace, onDone }: { workspace?: EditableWorkspace; o
             if (updated) onDone()
             return
         }
-        const result = await createWorkspaceFn(name, description)
+        const result = templateId
+            ? await createFromTemplateFn(templateId, name, description)
+            : await createWorkspaceFn(name, description)
         if (!result) return
         onDone()
         if ("limit" in result) return openUpgrade(UPGRADE_REASONS[result.limit])
@@ -96,6 +104,7 @@ function WorkspaceForm({ workspace, onDone }: { workspace?: EditableWorkspace; o
                     rows={3}
                 />
             </div>
+            {!workspace && <TemplatePicker value={templateId} onChange={setTemplateId}/>}
             <DialogFooter>
                 <Button onClick={handleSubmit} disabled={loading || !name.trim}>
                     {loading ? "Saving..." : workspace ? "Save" : "Create"}

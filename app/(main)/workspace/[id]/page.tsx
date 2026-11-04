@@ -11,10 +11,11 @@ import { getEntitlements, workspaceOwnerId, workspaceOwnerSelect } from "@/lib/b
 import { WorkspaceEditorsProvider } from "@/components/WorkspaceEditorsContext";
 import { DocEditor } from "@/components/DocEditorLoader";
 import { EditableWorkspaceName } from "./_components/EditableWorkspaceName";
-import { CanvasEditor } from "./_components/CanvasEditor";
+import { CanvasEditor } from "./_components/CanvasEditorLoader"
 import { AgentToggleButton } from "./_components/AgentToggleButton";
 import { ShareDialog } from "./_components/ShareDialog";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { VersionHistoryDialog } from "./_components/VersionHistoryDialog"
 
 type ViewMode = "doc" | "canvas" | "both";
 
@@ -29,23 +30,25 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
     const { id } = await params;
     const { view: viewParam, prompt } = await searchParams;
     const view = parseViewMode(viewParam);
-      console.log("[workspace] id:", id, "access:", await canAccessWorkspace(id));
 
-    // 404 rather than 403 so outsiders can't tell whether a workspace id exists.
-    if (!(await canAccessWorkspace(id))) notFound();
+    const [hasAccess, workspace] = await Promise.all([
+        canAccessWorkspace(id),
+        prisma.workspace.findUnique({
+            where: { id },
+            select: {
+                name: true,
+                shareToken: true,
+                ...workspaceOwnerSelect,
+                doc: { select: { content: true, yjsState: true } },
+                canvas: { select: { content: true } }
+            },
+        }),
+    ])
 
-    const workspace = await prisma.workspace.findUnique({
-        where: { id },
-        select: {
-            name: true,
-            shareToken: true,
-            ...workspaceOwnerSelect,
-            doc: {select: {content: true, yjsState: true}},
-            canvas: {select: {content: true}}
-        },
-    });
-    if (!workspace) notFound();
-    const entitlements  = await getEntitlements(workspaceOwnerId(workspace))
+    if (!hasAccess || !workspace) notFound()
+
+
+    const entitlements = await getEntitlements(workspaceOwnerId(workspace))
 
     const showDoc = view === "doc" || view === "both";
     const showCanvas = view === "canvas" || view === "both";
@@ -83,12 +86,13 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
 
                     <div className="flex flex-1 items-center justify-end gap-2">
                         <PlanButton upgradeOnlyWhenOut />
+                        <VersionHistoryDialog workspaceId={id} />
                         <ShareDialog
-                        workspaceId={id}
-                        workspaceName={workspace.name}
-                        initialShareToken={workspace.shareToken}
-                        canShare={entitlements.publicSharing}
-                        canExportPdf={entitlements.pdfExport}
+                            workspaceId={id}
+                            workspaceName={workspace.name}
+                            initialShareToken={workspace.shareToken}
+                            canShare={entitlements.publicSharing}
+                            canExportPdf={entitlements.pdfExport}
                         />
                         <AgentToggleButton workspaceId={id} initialPrompt={typeof prompt === "string" ? prompt : undefined} />
                     </div>

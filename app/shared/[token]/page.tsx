@@ -19,12 +19,13 @@ export default async function SharedPage({ params }: PageProps<"/shared/[token]"
         where: { shareToken: token },
         select: {
             name: true,
+            deletedAt: true,
             ...workspaceOwnerSelect,
             doc: { select: { content: true } },
             canvas: { select: { content: true } }
         },
     })
-    if (!workspace) notFound()
+    if (!workspace || workspace.deletedAt) notFound()
     if (!(await getEntitlements(workspaceOwnerId(workspace))).publicSharing) notFound()
 
     return (

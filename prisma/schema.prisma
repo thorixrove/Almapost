@@ -10,11 +10,24 @@ datasource db {
   provider = "postgresql"
 }
 
+enum CommentAnchorType {
+  BLOCK
+  SHAPE
+}
+
 enum WorkspaceStatus {
   PLANNING
   IN_PROGRESS
   IN_REVIEW
   DONE
+}
+
+// Where a saved version came from. Only MANUAL ones are kept forever; the other two are pruned
+// to the newest few per workspace (see actions/version.ts).
+enum VersionKind {
+  MANUAL
+  AUTO
+  BEFORE_RESTORE
 }
 
 model User {
@@ -30,6 +43,11 @@ model User {
   // not here, so this is just "who to blame/bill" rather than an access-control source of truth.
   createdWorkspaces Workspace[]
   agentPrompts      AgentPrompt[]
+  createdVersions   WorkspaceVersion[]
+  createdTemplates  WorkspaceTemplate[]
+  comments          Comment[]          @relation("CommentAuthor")
+  resolvedComments  Comment[]          @relation("CommentResolver")
+  commentMentions   CommentMention[]
 }
 
 model Workspace {
@@ -47,6 +65,7 @@ model Workspace {
   position    Float           @default(0)
   // Public read-only link token; null means sharing is off. Resetting it kills old links.
   shareToken  String?         @unique
+  deletedAt   DateTime?
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
@@ -56,6 +75,8 @@ model Workspace {
   doc          Doc?
   canvas       Canvas?
   agentPrompts AgentPrompt[]
+  versions     WorkspaceVersion[]
+  comments     Comment[]
 
   @@index([creatorId])
   @@index([clerkOrgId])
@@ -85,8 +106,6 @@ model Canvas {
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
-// One row per prompt a user sends to the agent, counted per owner each month for usage limits.
-// Rows outlive their workspace (SetNull), so deleting a workspace can't reset usage.
 model AgentPrompt {
   id          String   @id @default(cuid())
   // Who the prompt counts against: the workspace's Clerk org id, or the Clerk user id for a
@@ -100,4 +119,86 @@ model AgentPrompt {
   workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
 
   @@index([ownerId, createdAt])
+}
+
+
+model WorkspaceVersion {
+  id            String      @id @default(cuid())
+  workspaceId   String
+  kind          VersionKind
+  // Name typed by the user; null for automatic versions.
+  label         String?
+  // Short text excerpt and shape count, so the history list doesn't have to load full content.
+  preview       String?
+  shapeCount    Int         @default(0)
+  // BlockNote block JSON and tldraw snapshot, copied from Doc.content / Canvas.content.
+  docContent    Json?
+  canvasContent Json?
+  createdById   String?
+  createdAt     DateTime    @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, createdAt])
+}
+
+
+model WorkspaceTemplate {
+  id            String   @id @default(cuid())
+  name          String
+  description   String?
+  // Same ownership rule as workspaces: an organization's shared templates, or a solo user's own.
+  clerkOrgId    String?
+  creatorId     String
+  // BlockNote block JSON and tldraw snapshot, copied from Doc.content / Canvas.content.
+  docContent    Json?
+  canvasContent Json?
+  createdAt     DateTime @default(now())
+
+  creator User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@index([clerkOrgId])
+  @@index([creatorId])
+}
+
+
+model Comment {
+  id           String             @id @default(cuid())
+  workspaceId  String
+  authorId     String
+  parentId     String?
+  // Plain text. @mentions are stored as @[Name](userId) tokens (see lib/comment-body.ts).
+  body         String
+  // Optional attachment, best effort: the block or shape may be deleted later.
+  anchorType   CommentAnchorType?
+  anchorId     String?
+  // Set on a thread's top-level comment when it's resolved.
+  resolvedAt   DateTime?
+  resolvedById String?
+  createdAt    DateTime           @default(now())
+  editedAt     DateTime?
+
+  workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  author     User             @relation("CommentAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  resolvedBy User?            @relation("CommentResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+  parent     Comment?         @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies    Comment[]        @relation("CommentReplies")
+  mentions   CommentMention[]
+
+  @@index([workspaceId, createdAt])
+  @@index([parentId])
+}
+
+
+model CommentMention {
+  commentId String
+  userId    String
+  readAt    DateTime?
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([commentId, userId])
+  @@index([userId, readAt])
 }

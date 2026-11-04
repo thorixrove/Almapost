@@ -1,6 +1,7 @@
 import { clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { FREE_MONTHLY_PROMPTS } from "@/lib/plan-limits";
+import { ttlCache } from "@/lib/ttl-cache";
 
 const PROMPT_FEATURES = [
     { feature: "agent_prompts_2000", perMember: 2000 },
@@ -20,7 +21,7 @@ export async function getWorkspaceOwnerId(workspaceId: string) {
 }
 
 
-export async function getEntitlements(ownerId: string) {
+async function loadEntitlements(ownerId: string) {
     const clerk = await clerkClient()
     const isOrg = ownerId.startsWith("org_")
     const features = new Set<string>()
@@ -55,6 +56,12 @@ export async function getEntitlements(ownerId: string) {
         publicSharing: features.has("public_sharing"),
         pdfExport: features.has("pdf_export")
     }
+}
+
+const entitlementsCache = ttlCache<Awaited<ReturnType<typeof loadEntitlements>>>(30_000)
+
+export function getEntitlements(ownerId: string) {
+    return entitlementsCache(ownerId, () => loadEntitlements(ownerId))
 }
 
 function startOfMonthUtc() {

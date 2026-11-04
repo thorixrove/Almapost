@@ -401,7 +401,9 @@ export const ModelName = {
   Workspace: 'Workspace',
   Doc: 'Doc',
   Canvas: 'Canvas',
-  AgentPrompt: 'AgentPrompt'
+  AgentPrompt: 'AgentPrompt',
+  WorkspaceVersion: 'WorkspaceVersion',
+  WorkspaceTemplate: 'WorkspaceTemplate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "workspace" | "doc" | "canvas" | "agentPrompt"
+    modelProps: "user" | "workspace" | "doc" | "canvas" | "agentPrompt" | "workspaceVersion" | "workspaceTemplate"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -791,6 +793,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WorkspaceVersion: {
+      payload: Prisma.$WorkspaceVersionPayload<ExtArgs>
+      fields: Prisma.WorkspaceVersionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WorkspaceVersionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WorkspaceVersionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload>
+        }
+        findFirst: {
+          args: Prisma.WorkspaceVersionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WorkspaceVersionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload>
+        }
+        findMany: {
+          args: Prisma.WorkspaceVersionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload>[]
+        }
+        create: {
+          args: Prisma.WorkspaceVersionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload>
+        }
+        createMany: {
+          args: Prisma.WorkspaceVersionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WorkspaceVersionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload>[]
+        }
+        delete: {
+          args: Prisma.WorkspaceVersionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload>
+        }
+        update: {
+          args: Prisma.WorkspaceVersionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload>
+        }
+        deleteMany: {
+          args: Prisma.WorkspaceVersionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WorkspaceVersionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WorkspaceVersionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload>[]
+        }
+        upsert: {
+          args: Prisma.WorkspaceVersionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceVersionPayload>
+        }
+        aggregate: {
+          args: Prisma.WorkspaceVersionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWorkspaceVersion>
+        }
+        groupBy: {
+          args: Prisma.WorkspaceVersionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorkspaceVersionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WorkspaceVersionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorkspaceVersionCountAggregateOutputType> | number
+        }
+      }
+    }
+    WorkspaceTemplate: {
+      payload: Prisma.$WorkspaceTemplatePayload<ExtArgs>
+      fields: Prisma.WorkspaceTemplateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WorkspaceTemplateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WorkspaceTemplateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload>
+        }
+        findFirst: {
+          args: Prisma.WorkspaceTemplateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WorkspaceTemplateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload>
+        }
+        findMany: {
+          args: Prisma.WorkspaceTemplateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload>[]
+        }
+        create: {
+          args: Prisma.WorkspaceTemplateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload>
+        }
+        createMany: {
+          args: Prisma.WorkspaceTemplateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WorkspaceTemplateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload>[]
+        }
+        delete: {
+          args: Prisma.WorkspaceTemplateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload>
+        }
+        update: {
+          args: Prisma.WorkspaceTemplateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload>
+        }
+        deleteMany: {
+          args: Prisma.WorkspaceTemplateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WorkspaceTemplateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WorkspaceTemplateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload>[]
+        }
+        upsert: {
+          args: Prisma.WorkspaceTemplateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceTemplatePayload>
+        }
+        aggregate: {
+          args: Prisma.WorkspaceTemplateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWorkspaceTemplate>
+        }
+        groupBy: {
+          args: Prisma.WorkspaceTemplateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorkspaceTemplateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WorkspaceTemplateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorkspaceTemplateCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -852,6 +1002,7 @@ export const WorkspaceScalarFieldEnum = {
   status: 'status',
   position: 'position',
   shareToken: 'shareToken',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -891,6 +1042,36 @@ export const AgentPromptScalarFieldEnum = {
 } as const
 
 export type AgentPromptScalarFieldEnum = (typeof AgentPromptScalarFieldEnum)[keyof typeof AgentPromptScalarFieldEnum]
+
+
+export const WorkspaceVersionScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  kind: 'kind',
+  label: 'label',
+  preview: 'preview',
+  shapeCount: 'shapeCount',
+  docContent: 'docContent',
+  canvasContent: 'canvasContent',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkspaceVersionScalarFieldEnum = (typeof WorkspaceVersionScalarFieldEnum)[keyof typeof WorkspaceVersionScalarFieldEnum]
+
+
+export const WorkspaceTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  clerkOrgId: 'clerkOrgId',
+  creatorId: 'creatorId',
+  docContent: 'docContent',
+  canvasContent: 'canvasContent',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkspaceTemplateScalarFieldEnum = (typeof WorkspaceTemplateScalarFieldEnum)[keyof typeof WorkspaceTemplateScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1021,6 +1202,20 @@ export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Bytes[]'
  */
 export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
+    
+
+
+/**
+ * Reference to a field of type 'VersionKind'
+ */
+export type EnumVersionKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VersionKind'>
+    
+
+
+/**
+ * Reference to a field of type 'VersionKind[]'
+ */
+export type ListEnumVersionKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VersionKind[]'>
     
 
 
@@ -1193,6 +1388,8 @@ export type GlobalOmitConfig = {
   doc?: Prisma.DocOmit
   canvas?: Prisma.CanvasOmit
   agentPrompt?: Prisma.AgentPromptOmit
+  workspaceVersion?: Prisma.WorkspaceVersionOmit
+  workspaceTemplate?: Prisma.WorkspaceTemplateOmit
 }
 
 /* Types for Logging */

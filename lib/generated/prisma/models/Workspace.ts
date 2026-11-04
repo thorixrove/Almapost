@@ -43,6 +43,7 @@ export type WorkspaceMinAggregateOutputType = {
   status: $Enums.WorkspaceStatus | null
   position: number | null
   shareToken: string | null
+  deletedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +57,7 @@ export type WorkspaceMaxAggregateOutputType = {
   status: $Enums.WorkspaceStatus | null
   position: number | null
   shareToken: string | null
+  deletedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -69,6 +71,7 @@ export type WorkspaceCountAggregateOutputType = {
   status: number
   position: number
   shareToken: number
+  deletedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -92,6 +95,7 @@ export type WorkspaceMinAggregateInputType = {
   status?: true
   position?: true
   shareToken?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -105,6 +109,7 @@ export type WorkspaceMaxAggregateInputType = {
   status?: true
   position?: true
   shareToken?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -118,6 +123,7 @@ export type WorkspaceCountAggregateInputType = {
   status?: true
   position?: true
   shareToken?: true
+  deletedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -218,6 +224,7 @@ export type WorkspaceGroupByOutputType = {
   status: $Enums.WorkspaceStatus
   position: number
   shareToken: string | null
+  deletedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: WorkspaceCountAggregateOutputType | null
@@ -254,12 +261,14 @@ export type WorkspaceWhereInput = {
   status?: Prisma.EnumWorkspaceStatusFilter<"Workspace"> | $Enums.WorkspaceStatus
   position?: Prisma.FloatFilter<"Workspace"> | number
   shareToken?: Prisma.StringNullableFilter<"Workspace"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Workspace"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Workspace"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Workspace"> | Date | string
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   doc?: Prisma.XOR<Prisma.DocNullableScalarRelationFilter, Prisma.DocWhereInput> | null
   canvas?: Prisma.XOR<Prisma.CanvasNullableScalarRelationFilter, Prisma.CanvasWhereInput> | null
   agentPrompts?: Prisma.AgentPromptListRelationFilter
+  versions?: Prisma.WorkspaceVersionListRelationFilter
 }
 
 export type WorkspaceOrderByWithRelationInput = {
@@ -271,12 +280,14 @@ export type WorkspaceOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   position?: Prisma.SortOrder
   shareToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   creator?: Prisma.UserOrderByWithRelationInput
   doc?: Prisma.DocOrderByWithRelationInput
   canvas?: Prisma.CanvasOrderByWithRelationInput
   agentPrompts?: Prisma.AgentPromptOrderByRelationAggregateInput
+  versions?: Prisma.WorkspaceVersionOrderByRelationAggregateInput
 }
 
 export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -291,12 +302,14 @@ export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
   clerkOrgId?: Prisma.StringNullableFilter<"Workspace"> | string | null
   status?: Prisma.EnumWorkspaceStatusFilter<"Workspace"> | $Enums.WorkspaceStatus
   position?: Prisma.FloatFilter<"Workspace"> | number
+  deletedAt?: Prisma.DateTimeNullableFilter<"Workspace"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Workspace"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Workspace"> | Date | string
   creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   doc?: Prisma.XOR<Prisma.DocNullableScalarRelationFilter, Prisma.DocWhereInput> | null
   canvas?: Prisma.XOR<Prisma.CanvasNullableScalarRelationFilter, Prisma.CanvasWhereInput> | null
   agentPrompts?: Prisma.AgentPromptListRelationFilter
+  versions?: Prisma.WorkspaceVersionListRelationFilter
 }, "id" | "shareToken">
 
 export type WorkspaceOrderByWithAggregationInput = {
@@ -308,6 +321,7 @@ export type WorkspaceOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   position?: Prisma.SortOrder
   shareToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.WorkspaceCountOrderByAggregateInput
@@ -329,6 +343,7 @@ export type WorkspaceScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumWorkspaceStatusWithAggregatesFilter<"Workspace"> | $Enums.WorkspaceStatus
   position?: Prisma.FloatWithAggregatesFilter<"Workspace"> | number
   shareToken?: Prisma.StringNullableWithAggregatesFilter<"Workspace"> | string | null
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Workspace"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Workspace"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Workspace"> | Date | string
 }
@@ -341,12 +356,14 @@ export type WorkspaceCreateInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedWorkspacesInput
   doc?: Prisma.DocCreateNestedOneWithoutWorkspaceInput
   canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateInput = {
@@ -358,11 +375,13 @@ export type WorkspaceUncheckedCreateInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   doc?: Prisma.DocUncheckedCreateNestedOneWithoutWorkspaceInput
   canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUpdateInput = {
@@ -373,12 +392,14 @@ export type WorkspaceUpdateInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedWorkspacesNestedInput
   doc?: Prisma.DocUpdateOneWithoutWorkspaceNestedInput
   canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateInput = {
@@ -390,11 +411,13 @@ export type WorkspaceUncheckedUpdateInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doc?: Prisma.DocUncheckedUpdateOneWithoutWorkspaceNestedInput
   canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateManyInput = {
@@ -406,6 +429,7 @@ export type WorkspaceCreateManyInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -418,6 +442,7 @@ export type WorkspaceUpdateManyMutationInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -431,6 +456,7 @@ export type WorkspaceUncheckedUpdateManyInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -454,6 +480,7 @@ export type WorkspaceCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   position?: Prisma.SortOrder
   shareToken?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -471,6 +498,7 @@ export type WorkspaceMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   position?: Prisma.SortOrder
   shareToken?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -484,6 +512,7 @@ export type WorkspaceMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   position?: Prisma.SortOrder
   shareToken?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -556,6 +585,10 @@ export type FloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type WorkspaceCreateNestedOneWithoutDocInput = {
   create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutDocInput, Prisma.WorkspaceUncheckedCreateWithoutDocInput>
   connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutDocInput
@@ -600,6 +633,20 @@ export type WorkspaceUpdateOneWithoutAgentPromptsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutAgentPromptsInput, Prisma.WorkspaceUpdateWithoutAgentPromptsInput>, Prisma.WorkspaceUncheckedUpdateWithoutAgentPromptsInput>
 }
 
+export type WorkspaceCreateNestedOneWithoutVersionsInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutVersionsInput, Prisma.WorkspaceUncheckedCreateWithoutVersionsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutVersionsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+}
+
+export type WorkspaceUpdateOneRequiredWithoutVersionsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutVersionsInput, Prisma.WorkspaceUncheckedCreateWithoutVersionsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutVersionsInput
+  upsert?: Prisma.WorkspaceUpsertWithoutVersionsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutVersionsInput, Prisma.WorkspaceUpdateWithoutVersionsInput>, Prisma.WorkspaceUncheckedUpdateWithoutVersionsInput>
+}
+
 export type WorkspaceCreateWithoutCreatorInput = {
   id?: string
   name: string
@@ -608,11 +655,13 @@ export type WorkspaceCreateWithoutCreatorInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   doc?: Prisma.DocCreateNestedOneWithoutWorkspaceInput
   canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutCreatorInput = {
@@ -623,11 +672,13 @@ export type WorkspaceUncheckedCreateWithoutCreatorInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   doc?: Prisma.DocUncheckedCreateNestedOneWithoutWorkspaceInput
   canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutCreatorInput = {
@@ -668,6 +719,7 @@ export type WorkspaceScalarWhereInput = {
   status?: Prisma.EnumWorkspaceStatusFilter<"Workspace"> | $Enums.WorkspaceStatus
   position?: Prisma.FloatFilter<"Workspace"> | number
   shareToken?: Prisma.StringNullableFilter<"Workspace"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Workspace"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Workspace"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Workspace"> | Date | string
 }
@@ -680,11 +732,13 @@ export type WorkspaceCreateWithoutDocInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedWorkspacesInput
   canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutDocInput = {
@@ -696,10 +750,12 @@ export type WorkspaceUncheckedCreateWithoutDocInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutDocInput = {
@@ -726,11 +782,13 @@ export type WorkspaceUpdateWithoutDocInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedWorkspacesNestedInput
   canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutDocInput = {
@@ -742,10 +800,12 @@ export type WorkspaceUncheckedUpdateWithoutDocInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutCanvasInput = {
@@ -756,11 +816,13 @@ export type WorkspaceCreateWithoutCanvasInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedWorkspacesInput
   doc?: Prisma.DocCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutCanvasInput = {
@@ -772,10 +834,12 @@ export type WorkspaceUncheckedCreateWithoutCanvasInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   doc?: Prisma.DocUncheckedCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutCanvasInput = {
@@ -802,11 +866,13 @@ export type WorkspaceUpdateWithoutCanvasInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedWorkspacesNestedInput
   doc?: Prisma.DocUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutCanvasInput = {
@@ -818,10 +884,12 @@ export type WorkspaceUncheckedUpdateWithoutCanvasInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doc?: Prisma.DocUncheckedUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutAgentPromptsInput = {
@@ -832,11 +900,13 @@ export type WorkspaceCreateWithoutAgentPromptsInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   creator: Prisma.UserCreateNestedOneWithoutCreatedWorkspacesInput
   doc?: Prisma.DocCreateNestedOneWithoutWorkspaceInput
   canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutAgentPromptsInput = {
@@ -848,10 +918,12 @@ export type WorkspaceUncheckedCreateWithoutAgentPromptsInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   doc?: Prisma.DocUncheckedCreateNestedOneWithoutWorkspaceInput
   canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutAgentPromptsInput = {
@@ -878,11 +950,13 @@ export type WorkspaceUpdateWithoutAgentPromptsInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   creator?: Prisma.UserUpdateOneRequiredWithoutCreatedWorkspacesNestedInput
   doc?: Prisma.DocUpdateOneWithoutWorkspaceNestedInput
   canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutAgentPromptsInput = {
@@ -894,10 +968,96 @@ export type WorkspaceUncheckedUpdateWithoutAgentPromptsInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doc?: Prisma.DocUncheckedUpdateOneWithoutWorkspaceNestedInput
   canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutVersionsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  clerkOrgId?: string | null
+  status?: $Enums.WorkspaceStatus
+  position?: number
+  shareToken?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  creator: Prisma.UserCreateNestedOneWithoutCreatedWorkspacesInput
+  doc?: Prisma.DocCreateNestedOneWithoutWorkspaceInput
+  canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
+  agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutVersionsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  creatorId: string
+  clerkOrgId?: string | null
+  status?: $Enums.WorkspaceStatus
+  position?: number
+  shareToken?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  doc?: Prisma.DocUncheckedCreateNestedOneWithoutWorkspaceInput
+  canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
+  agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutVersionsInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutVersionsInput, Prisma.WorkspaceUncheckedCreateWithoutVersionsInput>
+}
+
+export type WorkspaceUpsertWithoutVersionsInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutVersionsInput, Prisma.WorkspaceUncheckedUpdateWithoutVersionsInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutVersionsInput, Prisma.WorkspaceUncheckedCreateWithoutVersionsInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutVersionsInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutVersionsInput, Prisma.WorkspaceUncheckedUpdateWithoutVersionsInput>
+}
+
+export type WorkspaceUpdateWithoutVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkOrgId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
+  position?: Prisma.FloatFieldUpdateOperationsInput | number
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedWorkspacesNestedInput
+  doc?: Prisma.DocUpdateOneWithoutWorkspaceNestedInput
+  canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
+  agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkOrgId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
+  position?: Prisma.FloatFieldUpdateOperationsInput | number
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  doc?: Prisma.DocUncheckedUpdateOneWithoutWorkspaceNestedInput
+  canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
+  agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateManyCreatorInput = {
@@ -908,6 +1068,7 @@ export type WorkspaceCreateManyCreatorInput = {
   status?: $Enums.WorkspaceStatus
   position?: number
   shareToken?: string | null
+  deletedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -920,11 +1081,13 @@ export type WorkspaceUpdateWithoutCreatorInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doc?: Prisma.DocUpdateOneWithoutWorkspaceNestedInput
   canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutCreatorInput = {
@@ -935,11 +1098,13 @@ export type WorkspaceUncheckedUpdateWithoutCreatorInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   doc?: Prisma.DocUncheckedUpdateOneWithoutWorkspaceNestedInput
   canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateManyWithoutCreatorInput = {
@@ -950,6 +1115,7 @@ export type WorkspaceUncheckedUpdateManyWithoutCreatorInput = {
   status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
   position?: Prisma.FloatFieldUpdateOperationsInput | number
   shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -961,10 +1127,12 @@ export type WorkspaceUncheckedUpdateManyWithoutCreatorInput = {
 
 export type WorkspaceCountOutputType = {
   agentPrompts: number
+  versions: number
 }
 
 export type WorkspaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   agentPrompts?: boolean | WorkspaceCountOutputTypeCountAgentPromptsArgs
+  versions?: boolean | WorkspaceCountOutputTypeCountVersionsArgs
 }
 
 /**
@@ -984,6 +1152,13 @@ export type WorkspaceCountOutputTypeCountAgentPromptsArgs<ExtArgs extends runtim
   where?: Prisma.AgentPromptWhereInput
 }
 
+/**
+ * WorkspaceCountOutputType without action
+ */
+export type WorkspaceCountOutputTypeCountVersionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkspaceVersionWhereInput
+}
+
 
 export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -994,12 +1169,14 @@ export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   status?: boolean
   position?: boolean
   shareToken?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   doc?: boolean | Prisma.Workspace$docArgs<ExtArgs>
   canvas?: boolean | Prisma.Workspace$canvasArgs<ExtArgs>
   agentPrompts?: boolean | Prisma.Workspace$agentPromptsArgs<ExtArgs>
+  versions?: boolean | Prisma.Workspace$versionsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workspace"]>
 
@@ -1012,6 +1189,7 @@ export type WorkspaceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   status?: boolean
   position?: boolean
   shareToken?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1026,6 +1204,7 @@ export type WorkspaceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   status?: boolean
   position?: boolean
   shareToken?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1040,16 +1219,18 @@ export type WorkspaceSelectScalar = {
   status?: boolean
   position?: boolean
   shareToken?: boolean
+  deletedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type WorkspaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "creatorId" | "clerkOrgId" | "status" | "position" | "shareToken" | "createdAt" | "updatedAt", ExtArgs["result"]["workspace"]>
+export type WorkspaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "creatorId" | "clerkOrgId" | "status" | "position" | "shareToken" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["workspace"]>
 export type WorkspaceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   doc?: boolean | Prisma.Workspace$docArgs<ExtArgs>
   canvas?: boolean | Prisma.Workspace$canvasArgs<ExtArgs>
   agentPrompts?: boolean | Prisma.Workspace$agentPromptsArgs<ExtArgs>
+  versions?: boolean | Prisma.Workspace$versionsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1066,6 +1247,7 @@ export type $WorkspacePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     doc: Prisma.$DocPayload<ExtArgs> | null
     canvas: Prisma.$CanvasPayload<ExtArgs> | null
     agentPrompts: Prisma.$AgentPromptPayload<ExtArgs>[]
+    versions: Prisma.$WorkspaceVersionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1076,6 +1258,7 @@ export type $WorkspacePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     status: $Enums.WorkspaceStatus
     position: number
     shareToken: string | null
+    deletedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["workspace"]>
@@ -1476,6 +1659,7 @@ export interface Prisma__WorkspaceClient<T, Null = never, ExtArgs extends runtim
   doc<T extends Prisma.Workspace$docArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$docArgs<ExtArgs>>): Prisma.Prisma__DocClient<runtime.Types.Result.GetResult<Prisma.$DocPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   canvas<T extends Prisma.Workspace$canvasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$canvasArgs<ExtArgs>>): Prisma.Prisma__CanvasClient<runtime.Types.Result.GetResult<Prisma.$CanvasPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   agentPrompts<T extends Prisma.Workspace$agentPromptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$agentPromptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentPromptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  versions<T extends Prisma.Workspace$versionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkspaceVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1513,6 +1697,7 @@ export interface WorkspaceFieldRefs {
   readonly status: Prisma.FieldRef<"Workspace", 'WorkspaceStatus'>
   readonly position: Prisma.FieldRef<"Workspace", 'Float'>
   readonly shareToken: Prisma.FieldRef<"Workspace", 'String'>
+  readonly deletedAt: Prisma.FieldRef<"Workspace", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Workspace", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Workspace", 'DateTime'>
 }
@@ -1975,6 +2160,30 @@ export type Workspace$agentPromptsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.AgentPromptScalarFieldEnum | Prisma.AgentPromptScalarFieldEnum[]
+}
+
+/**
+ * Workspace.versions
+ */
+export type Workspace$versionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkspaceVersion
+   */
+  select?: Prisma.WorkspaceVersionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkspaceVersion
+   */
+  omit?: Prisma.WorkspaceVersionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkspaceVersionInclude<ExtArgs> | null
+  where?: Prisma.WorkspaceVersionWhereInput
+  orderBy?: Prisma.WorkspaceVersionOrderByWithRelationInput | Prisma.WorkspaceVersionOrderByWithRelationInput[]
+  cursor?: Prisma.WorkspaceVersionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkspaceVersionScalarFieldEnum | Prisma.WorkspaceVersionScalarFieldEnum[]
 }
 
 /**

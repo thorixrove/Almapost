@@ -55,7 +55,9 @@ export const ModelName = {
   Workspace: 'Workspace',
   Doc: 'Doc',
   Canvas: 'Canvas',
-  AgentPrompt: 'AgentPrompt'
+  AgentPrompt: 'AgentPrompt',
+  WorkspaceVersion: 'WorkspaceVersion',
+  WorkspaceTemplate: 'WorkspaceTemplate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -96,6 +98,7 @@ export const WorkspaceScalarFieldEnum = {
   status: 'status',
   position: 'position',
   shareToken: 'shareToken',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -135,6 +138,36 @@ export const AgentPromptScalarFieldEnum = {
 } as const
 
 export type AgentPromptScalarFieldEnum = (typeof AgentPromptScalarFieldEnum)[keyof typeof AgentPromptScalarFieldEnum]
+
+
+export const WorkspaceVersionScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  kind: 'kind',
+  label: 'label',
+  preview: 'preview',
+  shapeCount: 'shapeCount',
+  docContent: 'docContent',
+  canvasContent: 'canvasContent',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkspaceVersionScalarFieldEnum = (typeof WorkspaceVersionScalarFieldEnum)[keyof typeof WorkspaceVersionScalarFieldEnum]
+
+
+export const WorkspaceTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  clerkOrgId: 'clerkOrgId',
+  creatorId: 'creatorId',
+  docContent: 'docContent',
+  canvasContent: 'canvasContent',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkspaceTemplateScalarFieldEnum = (typeof WorkspaceTemplateScalarFieldEnum)[keyof typeof WorkspaceTemplateScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -10,11 +10,11 @@ import { MicButton } from "@/components/MicButton";
 import { useUpgradeDialog } from "@/components/UpgradeDialog";
 import { PROMPT_LIMIT_ERROR, UPGRADE_REASONS } from "@/lib/plan-limits";
 import { submitOnEnter } from "@/lib/utils";
-
+import { AgentTurnReview } from "./AgentTurnReview";
 
 export function AgentChatPanel({ chat, isReady }: { chat: WorkspaceAgentChat; isReady: boolean }) {
     const [input, setInput] = useState("")
-    const { messages, sendMessage, stop, status, error } = chat
+    const { messages, sendMessage, stop, status, error, agentTurn, undoAgentTurn, redoAgentTurn, showAgentChanges } = chat
     const openUpgrade = useUpgradeDialog()
 
     const isBusy = status === "submitted" || status === "streaming"
@@ -54,8 +54,8 @@ export function AgentChatPanel({ chat, isReady }: { chat: WorkspaceAgentChat; is
                                 <div
                                     key={message.id}
                                     className={`max-w-[85%] space-y-1.5 rounded-lg px-3 py-2 text-sm ${message.role === "user"
-                                            ? "ml-auto bg-primary text-primary-foreground"
-                                            : "bg-white/5 text-foreground"
+                                        ? "ml-auto bg-primary text-primary-foreground"
+                                        : "bg-white/5 text-foreground"
                                         }`}
                                 >
                                     {message.parts.map((part, i) => {
@@ -101,6 +101,15 @@ export function AgentChatPanel({ chat, isReady }: { chat: WorkspaceAgentChat; is
                                     })}
                                 </div>
                             ))
+                        )}
+                        {!isBusy && agentTurn && (
+                            <AgentTurnReview
+                                summary={agentTurn.summary}
+                                undone={agentTurn.undone}
+                                onShow={showAgentChanges}
+                                onUndo={undoAgentTurn}
+                                onRedo={redoAgentTurn}
+                            />
                         )}
                         {isBusy && (
                             <p className="flex items-center gap-1.5 text-xs text-muted-foreground">

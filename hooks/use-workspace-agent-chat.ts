@@ -11,6 +11,17 @@ import { executeCanvasTool, summarizeCanvas, type ShapeIdMap } from "@/lib/agent
 import { executeDocTool, summarizeDoc } from "@/lib/agent-doc";
 import { refreshPromptUsage } from "@/components/PlanButton";
 import { useUpgradeDialog } from "@/components/UpgradeDialog";
+import { toast } from "sonner";
+import {
+  captureSurfaces,
+  hasChanges,
+  isPartialRestore,
+  restoreSurfaces,
+  revealChanges,
+  summarizeTurn,
+  type SurfaceSnapshot,
+  type TurnSummary,
+} from "@/lib/agent-turn";
 
 type Editors = { canvasEditor: Editor | null; docEditor: BlockNoteEditor | null };
 
@@ -30,10 +41,20 @@ function runTool({ canvasEditor, docEditor }: Editors, idMap: ShapeIdMap, toolNa
   }
 }
 
+type LastTurn = {
+  summary: TurnSummary
+  before: SurfaceSnapshot
+  redo: SurfaceSnapshot | null
+}
+
 export function useWorkspaceAgentChat(workspaceId: string, editors: Editors) {
   const idMap = useRef<ShapeIdMap>(new Map());
+  const turnRef = useRef<{ before: SurfaceSnapshot } | null>(null)
+  const [lastTurn, setLastTurn] = useState<LastTurn | null>(null)
   const openUpgrade = useUpgradeDialog();
   const editorsRef = useRef(editors);
+
+
   useEffect(() => {
     editorsRef.current = editors;
   });
@@ -57,10 +78,34 @@ export function useWorkspaceAgentChat(workspaceId: string, editors: Editors) {
       })
   );
 
+  const finishTurn = ({
+    messages,
+    isAbort,
+    isDisconnect,
+    isError
+  }: {
+    messages: Parameters<typeof lastAssistantMessageIsCompleteWithToolCalls>[0]["messages"]
+    isAbort: boolean
+    isDisconnect: boolean
+    isError: boolean
+  }) => {
+    const turn = turnRef.current
+    if (!turn) return
+    const interupted = isAbort || isDisconnect || isError
+    if (!interupted && lastAssistantMessageIsCompleteWithToolCalls({ messages })) return
+
+    turnRef.current = null
+    const summary = summarizeTurn(turn.before, captureSurfaces(editorsRef.current))
+    if (hasChanges(summary)) setLastTurn({ summary, before: turn.before, redo: null })
+  }
+
   const chat = useChat({
     transport,
     sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
-    onFinish: refreshPromptUsage,
+    onFinish: (event) => {
+      refreshPromptUsage()
+      finishTurn(event)
+    },
     onError: (error) => {
       if (!error.message.includes(PROMPT_LIMIT_ERROR)) return;
       refreshPromptUsage();
@@ -77,7 +122,42 @@ export function useWorkspaceAgentChat(workspaceId: string, editors: Editors) {
     },
   });
 
-  return chat;
+  const sendMessage: typeof chat.sendMessage = (...args) => {
+    turnRef.current = { before: captureSurfaces(editorsRef.current) }
+    setLastTurn(null)
+    return chat.sendMessage(...args)
+  }
+
+  const undoAgentTurn = () => {
+    if (!lastTurn) return
+    const redo = captureSurfaces(editorsRef.current)
+    const restored = restoreSurfaces(editorsRef.current, lastTurn.before)
+    if (isPartialRestore(lastTurn.before, restored)) {
+
+      toast.info("Only the open view was reverted. Switch to the Both view and undo again for the rest.")
+      return
+    }
+    setLastTurn({ ...lastTurn, redo })
+  }
+
+  const redoAgentTurn = () => {
+    if (!lastTurn?.redo) return
+    restoreSurfaces(editorsRef.current, lastTurn.redo)
+    setLastTurn({ ...lastTurn, redo: null })
+  }
+
+  const showAgentChanges = () => {
+    if (lastTurn) revealChanges(editorsRef.current, lastTurn.summary)
+  }
+
+  return {
+    ...chat,
+    sendMessage,
+    agentTurn: lastTurn ? { summary: lastTurn.summary, undone: lastTurn.redo !== null } : null,
+    undoAgentTurn,
+    redoAgentTurn,
+    showAgentChanges,
+  }
 }
 
 export type WorkspaceAgentChat = ReturnType<typeof useWorkspaceAgentChat>;
