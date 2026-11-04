@@ -10,6 +10,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum CommentAnchorType {
+  BLOCK
+  SHAPE
+}
+
 enum WorkspaceStatus {
   PLANNING
   IN_PROGRESS
@@ -40,6 +45,9 @@ model User {
   agentPrompts      AgentPrompt[]
   createdVersions   WorkspaceVersion[]
   createdTemplates  WorkspaceTemplate[]
+  comments          Comment[]          @relation("CommentAuthor")
+  resolvedComments  Comment[]          @relation("CommentResolver")
+  commentMentions   CommentMention[]
 }
 
 model Workspace {
@@ -68,6 +76,7 @@ model Workspace {
   canvas       Canvas?
   agentPrompts AgentPrompt[]
   versions     WorkspaceVersion[]
+  comments     Comment[]
 
   @@index([creatorId])
   @@index([clerkOrgId])
@@ -151,4 +160,45 @@ model WorkspaceTemplate {
 
   @@index([clerkOrgId])
   @@index([creatorId])
+}
+
+
+model Comment {
+  id           String             @id @default(cuid())
+  workspaceId  String
+  authorId     String
+  parentId     String?
+  // Plain text. @mentions are stored as @[Name](userId) tokens (see lib/comment-body.ts).
+  body         String
+  // Optional attachment, best effort: the block or shape may be deleted later.
+  anchorType   CommentAnchorType?
+  anchorId     String?
+  // Set on a thread's top-level comment when it's resolved.
+  resolvedAt   DateTime?
+  resolvedById String?
+  createdAt    DateTime           @default(now())
+  editedAt     DateTime?
+
+  workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  author     User             @relation("CommentAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  resolvedBy User?            @relation("CommentResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+  parent     Comment?         @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies    Comment[]        @relation("CommentReplies")
+  mentions   CommentMention[]
+
+  @@index([workspaceId, createdAt])
+  @@index([parentId])
+}
+
+
+model CommentMention {
+  commentId String
+  userId    String
+  readAt    DateTime?
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([commentId, userId])
+  @@index([userId, readAt])
 }
