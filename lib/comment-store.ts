@@ -169,7 +169,7 @@ export async function commentSummary(db: PrismaClient, input: { workspaceId: str
     return { openThreads, unreadMention }
 }
 
-export async function unreadMentionForUser(db: PrismaClient, input: { userId: string; limit: number }) {
+export async function unreadMentionsForUser(db: PrismaClient, input: { userId: string; limit: number }) {
     const prisma = asCommentStorePrismaClient(db)
     const rows = await prisma.commentMention.findMany({
         where: { userId: input.userId, readAt: null },
