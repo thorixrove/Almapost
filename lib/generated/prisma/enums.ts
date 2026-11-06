@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const CommentAnchorType = {
+  BLOCK: 'BLOCK',
+  SHAPE: 'SHAPE'
+} as const
+
+export type CommentAnchorType = (typeof CommentAnchorType)[keyof typeof CommentAnchorType]
+
+
 export const WorkspaceStatus = {
   PLANNING: 'PLANNING',
   IN_PROGRESS: 'IN_PROGRESS',
