@@ -291,6 +291,23 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
+export type EnumCommentAnchorTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommentAnchorType | Prisma.EnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CommentAnchorType[] | Prisma.ListEnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CommentAnchorType[] | Prisma.ListEnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCommentAnchorTypeNullableFilter<$PrismaModel> | $Enums.CommentAnchorType | null
+}
+
+export type EnumCommentAnchorTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommentAnchorType | Prisma.EnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CommentAnchorType[] | Prisma.ListEnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CommentAnchorType[] | Prisma.ListEnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCommentAnchorTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.CommentAnchorType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommentAnchorTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommentAnchorTypeNullableFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -541,6 +558,23 @@ export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedIntFilter<$PrismaModel>
   _max?: Prisma.NestedIntFilter<$PrismaModel>
+}
+
+export type NestedEnumCommentAnchorTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommentAnchorType | Prisma.EnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CommentAnchorType[] | Prisma.ListEnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CommentAnchorType[] | Prisma.ListEnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCommentAnchorTypeNullableFilter<$PrismaModel> | $Enums.CommentAnchorType | null
+}
+
+export type NestedEnumCommentAnchorTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommentAnchorType | Prisma.EnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CommentAnchorType[] | Prisma.ListEnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.CommentAnchorType[] | Prisma.ListEnumCommentAnchorTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumCommentAnchorTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.CommentAnchorType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommentAnchorTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommentAnchorTypeNullableFilter<$PrismaModel>
 }
 
 

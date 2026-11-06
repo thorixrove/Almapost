@@ -269,6 +269,7 @@ export type WorkspaceWhereInput = {
   canvas?: Prisma.XOR<Prisma.CanvasNullableScalarRelationFilter, Prisma.CanvasWhereInput> | null
   agentPrompts?: Prisma.AgentPromptListRelationFilter
   versions?: Prisma.WorkspaceVersionListRelationFilter
+  comments?: Prisma.CommentListRelationFilter
 }
 
 export type WorkspaceOrderByWithRelationInput = {
@@ -288,6 +289,7 @@ export type WorkspaceOrderByWithRelationInput = {
   canvas?: Prisma.CanvasOrderByWithRelationInput
   agentPrompts?: Prisma.AgentPromptOrderByRelationAggregateInput
   versions?: Prisma.WorkspaceVersionOrderByRelationAggregateInput
+  comments?: Prisma.CommentOrderByRelationAggregateInput
 }
 
 export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -310,6 +312,7 @@ export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
   canvas?: Prisma.XOR<Prisma.CanvasNullableScalarRelationFilter, Prisma.CanvasWhereInput> | null
   agentPrompts?: Prisma.AgentPromptListRelationFilter
   versions?: Prisma.WorkspaceVersionListRelationFilter
+  comments?: Prisma.CommentListRelationFilter
 }, "id" | "shareToken">
 
 export type WorkspaceOrderByWithAggregationInput = {
@@ -364,6 +367,7 @@ export type WorkspaceCreateInput = {
   canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
   versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateInput = {
@@ -382,6 +386,7 @@ export type WorkspaceUncheckedCreateInput = {
   canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
   versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUpdateInput = {
@@ -400,6 +405,7 @@ export type WorkspaceUpdateInput = {
   canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
   versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateInput = {
@@ -418,6 +424,7 @@ export type WorkspaceUncheckedUpdateInput = {
   canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
   versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateManyInput = {
@@ -647,6 +654,20 @@ export type WorkspaceUpdateOneRequiredWithoutVersionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutVersionsInput, Prisma.WorkspaceUpdateWithoutVersionsInput>, Prisma.WorkspaceUncheckedUpdateWithoutVersionsInput>
 }
 
+export type WorkspaceCreateNestedOneWithoutCommentsInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutCommentsInput, Prisma.WorkspaceUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutCommentsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+}
+
+export type WorkspaceUpdateOneRequiredWithoutCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutCommentsInput, Prisma.WorkspaceUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutCommentsInput
+  upsert?: Prisma.WorkspaceUpsertWithoutCommentsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutCommentsInput, Prisma.WorkspaceUpdateWithoutCommentsInput>, Prisma.WorkspaceUncheckedUpdateWithoutCommentsInput>
+}
+
 export type WorkspaceCreateWithoutCreatorInput = {
   id?: string
   name: string
@@ -662,6 +683,7 @@ export type WorkspaceCreateWithoutCreatorInput = {
   canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
   versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutCreatorInput = {
@@ -679,6 +701,7 @@ export type WorkspaceUncheckedCreateWithoutCreatorInput = {
   canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
   versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutCreatorInput = {
@@ -739,6 +762,7 @@ export type WorkspaceCreateWithoutDocInput = {
   canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
   versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutDocInput = {
@@ -756,6 +780,7 @@ export type WorkspaceUncheckedCreateWithoutDocInput = {
   canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
   versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutDocInput = {
@@ -789,6 +814,7 @@ export type WorkspaceUpdateWithoutDocInput = {
   canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
   versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutDocInput = {
@@ -806,6 +832,7 @@ export type WorkspaceUncheckedUpdateWithoutDocInput = {
   canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
   versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutCanvasInput = {
@@ -823,6 +850,7 @@ export type WorkspaceCreateWithoutCanvasInput = {
   doc?: Prisma.DocCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
   versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutCanvasInput = {
@@ -840,6 +868,7 @@ export type WorkspaceUncheckedCreateWithoutCanvasInput = {
   doc?: Prisma.DocUncheckedCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
   versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutCanvasInput = {
@@ -873,6 +902,7 @@ export type WorkspaceUpdateWithoutCanvasInput = {
   doc?: Prisma.DocUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
   versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutCanvasInput = {
@@ -890,6 +920,7 @@ export type WorkspaceUncheckedUpdateWithoutCanvasInput = {
   doc?: Prisma.DocUncheckedUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
   versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutAgentPromptsInput = {
@@ -907,6 +938,7 @@ export type WorkspaceCreateWithoutAgentPromptsInput = {
   doc?: Prisma.DocCreateNestedOneWithoutWorkspaceInput
   canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
   versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutAgentPromptsInput = {
@@ -924,6 +956,7 @@ export type WorkspaceUncheckedCreateWithoutAgentPromptsInput = {
   doc?: Prisma.DocUncheckedCreateNestedOneWithoutWorkspaceInput
   canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
   versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutAgentPromptsInput = {
@@ -957,6 +990,7 @@ export type WorkspaceUpdateWithoutAgentPromptsInput = {
   doc?: Prisma.DocUpdateOneWithoutWorkspaceNestedInput
   canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
   versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutAgentPromptsInput = {
@@ -974,6 +1008,7 @@ export type WorkspaceUncheckedUpdateWithoutAgentPromptsInput = {
   doc?: Prisma.DocUncheckedUpdateOneWithoutWorkspaceNestedInput
   canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
   versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutVersionsInput = {
@@ -991,6 +1026,7 @@ export type WorkspaceCreateWithoutVersionsInput = {
   doc?: Prisma.DocCreateNestedOneWithoutWorkspaceInput
   canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutVersionsInput = {
@@ -1008,6 +1044,7 @@ export type WorkspaceUncheckedCreateWithoutVersionsInput = {
   doc?: Prisma.DocUncheckedCreateNestedOneWithoutWorkspaceInput
   canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
   agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutVersionsInput = {
@@ -1041,6 +1078,7 @@ export type WorkspaceUpdateWithoutVersionsInput = {
   doc?: Prisma.DocUpdateOneWithoutWorkspaceNestedInput
   canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutVersionsInput = {
@@ -1058,6 +1096,95 @@ export type WorkspaceUncheckedUpdateWithoutVersionsInput = {
   doc?: Prisma.DocUncheckedUpdateOneWithoutWorkspaceNestedInput
   canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutCommentsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  clerkOrgId?: string | null
+  status?: $Enums.WorkspaceStatus
+  position?: number
+  shareToken?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  creator: Prisma.UserCreateNestedOneWithoutCreatedWorkspacesInput
+  doc?: Prisma.DocCreateNestedOneWithoutWorkspaceInput
+  canvas?: Prisma.CanvasCreateNestedOneWithoutWorkspaceInput
+  agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutCommentsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  creatorId: string
+  clerkOrgId?: string | null
+  status?: $Enums.WorkspaceStatus
+  position?: number
+  shareToken?: string | null
+  deletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  doc?: Prisma.DocUncheckedCreateNestedOneWithoutWorkspaceInput
+  canvas?: Prisma.CanvasUncheckedCreateNestedOneWithoutWorkspaceInput
+  agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutWorkspaceInput
+  versions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutCommentsInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutCommentsInput, Prisma.WorkspaceUncheckedCreateWithoutCommentsInput>
+}
+
+export type WorkspaceUpsertWithoutCommentsInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutCommentsInput, Prisma.WorkspaceUncheckedUpdateWithoutCommentsInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutCommentsInput, Prisma.WorkspaceUncheckedCreateWithoutCommentsInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutCommentsInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutCommentsInput, Prisma.WorkspaceUncheckedUpdateWithoutCommentsInput>
+}
+
+export type WorkspaceUpdateWithoutCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clerkOrgId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
+  position?: Prisma.FloatFieldUpdateOperationsInput | number
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedWorkspacesNestedInput
+  doc?: Prisma.DocUpdateOneWithoutWorkspaceNestedInput
+  canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
+  agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkOrgId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumWorkspaceStatusFieldUpdateOperationsInput | $Enums.WorkspaceStatus
+  position?: Prisma.FloatFieldUpdateOperationsInput | number
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  doc?: Prisma.DocUncheckedUpdateOneWithoutWorkspaceNestedInput
+  canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
+  agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
+  versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateManyCreatorInput = {
@@ -1088,6 +1215,7 @@ export type WorkspaceUpdateWithoutCreatorInput = {
   canvas?: Prisma.CanvasUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUpdateManyWithoutWorkspaceNestedInput
   versions?: Prisma.WorkspaceVersionUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutCreatorInput = {
@@ -1105,6 +1233,7 @@ export type WorkspaceUncheckedUpdateWithoutCreatorInput = {
   canvas?: Prisma.CanvasUncheckedUpdateOneWithoutWorkspaceNestedInput
   agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutWorkspaceNestedInput
   versions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutWorkspaceNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateManyWithoutCreatorInput = {
@@ -1128,11 +1257,13 @@ export type WorkspaceUncheckedUpdateManyWithoutCreatorInput = {
 export type WorkspaceCountOutputType = {
   agentPrompts: number
   versions: number
+  comments: number
 }
 
 export type WorkspaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   agentPrompts?: boolean | WorkspaceCountOutputTypeCountAgentPromptsArgs
   versions?: boolean | WorkspaceCountOutputTypeCountVersionsArgs
+  comments?: boolean | WorkspaceCountOutputTypeCountCommentsArgs
 }
 
 /**
@@ -1159,6 +1290,13 @@ export type WorkspaceCountOutputTypeCountVersionsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.WorkspaceVersionWhereInput
 }
 
+/**
+ * WorkspaceCountOutputType without action
+ */
+export type WorkspaceCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentWhereInput
+}
+
 
 export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1177,6 +1315,7 @@ export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   canvas?: boolean | Prisma.Workspace$canvasArgs<ExtArgs>
   agentPrompts?: boolean | Prisma.Workspace$agentPromptsArgs<ExtArgs>
   versions?: boolean | Prisma.Workspace$versionsArgs<ExtArgs>
+  comments?: boolean | Prisma.Workspace$commentsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workspace"]>
 
@@ -1231,6 +1370,7 @@ export type WorkspaceInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
   canvas?: boolean | Prisma.Workspace$canvasArgs<ExtArgs>
   agentPrompts?: boolean | Prisma.Workspace$agentPromptsArgs<ExtArgs>
   versions?: boolean | Prisma.Workspace$versionsArgs<ExtArgs>
+  comments?: boolean | Prisma.Workspace$commentsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1248,6 +1388,7 @@ export type $WorkspacePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     canvas: Prisma.$CanvasPayload<ExtArgs> | null
     agentPrompts: Prisma.$AgentPromptPayload<ExtArgs>[]
     versions: Prisma.$WorkspaceVersionPayload<ExtArgs>[]
+    comments: Prisma.$CommentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1660,6 +1801,7 @@ export interface Prisma__WorkspaceClient<T, Null = never, ExtArgs extends runtim
   canvas<T extends Prisma.Workspace$canvasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$canvasArgs<ExtArgs>>): Prisma.Prisma__CanvasClient<runtime.Types.Result.GetResult<Prisma.$CanvasPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   agentPrompts<T extends Prisma.Workspace$agentPromptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$agentPromptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentPromptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   versions<T extends Prisma.Workspace$versionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkspaceVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  comments<T extends Prisma.Workspace$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2184,6 +2326,30 @@ export type Workspace$versionsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.WorkspaceVersionScalarFieldEnum | Prisma.WorkspaceVersionScalarFieldEnum[]
+}
+
+/**
+ * Workspace.comments
+ */
+export type Workspace$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Comment
+   */
+  select?: Prisma.CommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Comment
+   */
+  omit?: Prisma.CommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentInclude<ExtArgs> | null
+  where?: Prisma.CommentWhereInput
+  orderBy?: Prisma.CommentOrderByWithRelationInput | Prisma.CommentOrderByWithRelationInput[]
+  cursor?: Prisma.CommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
 }
 
 /**

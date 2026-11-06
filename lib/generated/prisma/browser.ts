@@ -52,3 +52,13 @@ export type WorkspaceVersion = Prisma.WorkspaceVersionModel
  * 
  */
 export type WorkspaceTemplate = Prisma.WorkspaceTemplateModel
+/**
+ * Model Comment
+ * 
+ */
+export type Comment = Prisma.CommentModel
+/**
+ * Model CommentMention
+ * 
+ */
+export type CommentMention = Prisma.CommentMentionModel

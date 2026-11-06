@@ -57,7 +57,9 @@ export const ModelName = {
   Canvas: 'Canvas',
   AgentPrompt: 'AgentPrompt',
   WorkspaceVersion: 'WorkspaceVersion',
-  WorkspaceTemplate: 'WorkspaceTemplate'
+  WorkspaceTemplate: 'WorkspaceTemplate',
+  Comment: 'Comment',
+  CommentMention: 'CommentMention'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -168,6 +170,32 @@ export const WorkspaceTemplateScalarFieldEnum = {
 } as const
 
 export type WorkspaceTemplateScalarFieldEnum = (typeof WorkspaceTemplateScalarFieldEnum)[keyof typeof WorkspaceTemplateScalarFieldEnum]
+
+
+export const CommentScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  authorId: 'authorId',
+  parentId: 'parentId',
+  body: 'body',
+  anchorType: 'anchorType',
+  anchorId: 'anchorId',
+  resolvedAt: 'resolvedAt',
+  resolvedById: 'resolvedById',
+  createdAt: 'createdAt',
+  editedAt: 'editedAt'
+} as const
+
+export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const CommentMentionScalarFieldEnum = {
+  commentId: 'commentId',
+  userId: 'userId',
+  readAt: 'readAt'
+} as const
+
+export type CommentMentionScalarFieldEnum = (typeof CommentMentionScalarFieldEnum)[keyof typeof CommentMentionScalarFieldEnum]
 
 
 export const SortOrder = {

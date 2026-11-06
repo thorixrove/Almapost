@@ -1,7 +1,6 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { workspaceOwnerSelect } from "@/lib/billing";
-import { cache } from "react";
 
 
 export async function canAccessWorkspace(workspaceId: string, { includeTrashed = false} = {}) {
