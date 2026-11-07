@@ -3,7 +3,8 @@ import { streamText, convertToModelMessages, type UIMessage } from "ai";
 import { agentToolDefs } from "@/lib/agent-tools";
 import { PROMPT_LIMIT_ERROR } from "@/lib/plan-limits";
 import { checkUser } from "@/actions/check-user";
-import { canAccessWorkspace } from "@/lib/workspace-access";
+import { getWorkspaceRole  } from "@/lib/workspace-access";
+import { canEditRole } from "@/lib/workspace-role";
 import { getPromptUsage, getWorkspaceOwnerId, recordPrompt } from "@/lib/billing";
 
 const SYSTEM_PROMPT = `You are Almapost's workspace agent. A workspace has two surfaces: a canvas (an infinite whiteboard for diagrams) and a doc (a rich-text document). You change them only by calling tools, never by describing changes in text. Never use em dashes in your replies.
@@ -51,7 +52,9 @@ export async function POST(req: Request) {
     docContext: string | null;
   } = await req.json();
 
-  if (!(await canAccessWorkspace(workspaceId))) return new Response("Workspace not found", { status: 404 });
+  const role = await  getWorkspaceRole(workspaceId)
+  if (!role) return new Response("Workspace not found", { status: 404 })
+  if (!canEditRole(role)) return new Response("You have view-onlly accessto this workspace", { status: 403 })
 
   // Only a message the user typed counts as a prompt; the automatic follow-ups after tool calls
   // end with the agent's own message, so a prompt that draws 20 shapes still counts once.

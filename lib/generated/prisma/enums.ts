@@ -17,6 +17,14 @@ export const CommentAnchorType = {
 export type CommentAnchorType = (typeof CommentAnchorType)[keyof typeof CommentAnchorType]
 
 
+export const WorkspaceRole = {
+  EDITOR: 'EDITOR',
+  VIEWER: 'VIEWER'
+} as const
+
+export type WorkspaceRole = (typeof WorkspaceRole)[keyof typeof WorkspaceRole]
+
+
 export const WorkspaceStatus = {
   PLANNING: 'PLANNING',
   IN_PROGRESS: 'IN_PROGRESS',

@@ -59,7 +59,8 @@ export const ModelName = {
   WorkspaceVersion: 'WorkspaceVersion',
   WorkspaceTemplate: 'WorkspaceTemplate',
   Comment: 'Comment',
-  CommentMention: 'CommentMention'
+  CommentMention: 'CommentMention',
+  WorkspaceAccess: 'WorkspaceAccess'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -102,7 +103,8 @@ export const WorkspaceScalarFieldEnum = {
   shareToken: 'shareToken',
   deletedAt: 'deletedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  memberRole: 'memberRole'
 } as const
 
 export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]
@@ -196,6 +198,15 @@ export const CommentMentionScalarFieldEnum = {
 } as const
 
 export type CommentMentionScalarFieldEnum = (typeof CommentMentionScalarFieldEnum)[keyof typeof CommentMentionScalarFieldEnum]
+
+
+export const WorkspaceAccessScalarFieldEnum = {
+  workspaceId: 'workspaceId',
+  userId: 'userId',
+  role: 'role'
+} as const
+
+export type WorkspaceAccessScalarFieldEnum = (typeof WorkspaceAccessScalarFieldEnum)[keyof typeof WorkspaceAccessScalarFieldEnum]
 
 
 export const SortOrder = {

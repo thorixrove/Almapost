@@ -205,6 +205,7 @@ export type UserWhereInput = {
   comments?: Prisma.CommentListRelationFilter
   resolvedComments?: Prisma.CommentListRelationFilter
   commentMentions?: Prisma.CommentMentionListRelationFilter
+  workspaceAccess?: Prisma.WorkspaceAccessListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -222,6 +223,7 @@ export type UserOrderByWithRelationInput = {
   comments?: Prisma.CommentOrderByRelationAggregateInput
   resolvedComments?: Prisma.CommentOrderByRelationAggregateInput
   commentMentions?: Prisma.CommentMentionOrderByRelationAggregateInput
+  workspaceAccess?: Prisma.WorkspaceAccessOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -242,6 +244,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   comments?: Prisma.CommentListRelationFilter
   resolvedComments?: Prisma.CommentListRelationFilter
   commentMentions?: Prisma.CommentMentionListRelationFilter
+  workspaceAccess?: Prisma.WorkspaceAccessListRelationFilter
 }, "id" | "clerkId" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -285,6 +288,7 @@ export type UserCreateInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -302,6 +306,7 @@ export type UserUncheckedCreateInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -319,6 +324,7 @@ export type UserUpdateInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -336,6 +342,7 @@ export type UserUncheckedUpdateInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -522,6 +529,20 @@ export type UserUpdateOneRequiredWithoutCommentMentionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCommentMentionsInput, Prisma.UserUpdateWithoutCommentMentionsInput>, Prisma.UserUncheckedUpdateWithoutCommentMentionsInput>
 }
 
+export type UserCreateNestedOneWithoutWorkspaceAccessInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkspaceAccessInput, Prisma.UserUncheckedCreateWithoutWorkspaceAccessInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkspaceAccessInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWorkspaceAccessNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkspaceAccessInput, Prisma.UserUncheckedCreateWithoutWorkspaceAccessInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkspaceAccessInput
+  upsert?: Prisma.UserUpsertWithoutWorkspaceAccessInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWorkspaceAccessInput, Prisma.UserUpdateWithoutWorkspaceAccessInput>, Prisma.UserUncheckedUpdateWithoutWorkspaceAccessInput>
+}
+
 export type UserCreateWithoutCreatedWorkspacesInput = {
   id?: string
   clerkId: string
@@ -536,6 +557,7 @@ export type UserCreateWithoutCreatedWorkspacesInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedWorkspacesInput = {
@@ -552,6 +574,7 @@ export type UserUncheckedCreateWithoutCreatedWorkspacesInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedWorkspacesInput = {
@@ -584,6 +607,7 @@ export type UserUpdateWithoutCreatedWorkspacesInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedWorkspacesInput = {
@@ -600,6 +624,7 @@ export type UserUncheckedUpdateWithoutCreatedWorkspacesInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAgentPromptsInput = {
@@ -616,6 +641,7 @@ export type UserCreateWithoutAgentPromptsInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAgentPromptsInput = {
@@ -632,6 +658,7 @@ export type UserUncheckedCreateWithoutAgentPromptsInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAgentPromptsInput = {
@@ -664,6 +691,7 @@ export type UserUpdateWithoutAgentPromptsInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAgentPromptsInput = {
@@ -680,6 +708,7 @@ export type UserUncheckedUpdateWithoutAgentPromptsInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedVersionsInput = {
@@ -696,6 +725,7 @@ export type UserCreateWithoutCreatedVersionsInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedVersionsInput = {
@@ -712,6 +742,7 @@ export type UserUncheckedCreateWithoutCreatedVersionsInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedVersionsInput = {
@@ -744,6 +775,7 @@ export type UserUpdateWithoutCreatedVersionsInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedVersionsInput = {
@@ -760,6 +792,7 @@ export type UserUncheckedUpdateWithoutCreatedVersionsInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedTemplatesInput = {
@@ -776,6 +809,7 @@ export type UserCreateWithoutCreatedTemplatesInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedTemplatesInput = {
@@ -792,6 +826,7 @@ export type UserUncheckedCreateWithoutCreatedTemplatesInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedTemplatesInput = {
@@ -824,6 +859,7 @@ export type UserUpdateWithoutCreatedTemplatesInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedTemplatesInput = {
@@ -840,6 +876,7 @@ export type UserUncheckedUpdateWithoutCreatedTemplatesInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -856,6 +893,7 @@ export type UserCreateWithoutCommentsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -872,6 +910,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -893,6 +932,7 @@ export type UserCreateWithoutResolvedCommentsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutResolvedCommentsInput = {
@@ -909,6 +949,7 @@ export type UserUncheckedCreateWithoutResolvedCommentsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutResolvedCommentsInput = {
@@ -941,6 +982,7 @@ export type UserUpdateWithoutCommentsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -957,6 +999,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutResolvedCommentsInput = {
@@ -984,6 +1027,7 @@ export type UserUpdateWithoutResolvedCommentsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResolvedCommentsInput = {
@@ -1000,6 +1044,7 @@ export type UserUncheckedUpdateWithoutResolvedCommentsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCommentMentionsInput = {
@@ -1016,6 +1061,7 @@ export type UserCreateWithoutCommentMentionsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommentMentionsInput = {
@@ -1032,6 +1078,7 @@ export type UserUncheckedCreateWithoutCommentMentionsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommentMentionsInput = {
@@ -1064,6 +1111,7 @@ export type UserUpdateWithoutCommentMentionsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentMentionsInput = {
@@ -1080,6 +1128,91 @@ export type UserUncheckedUpdateWithoutCommentMentionsInput = {
   createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWorkspaceAccessInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name?: string | null
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdWorkspaces?: Prisma.WorkspaceCreateNestedManyWithoutCreatorInput
+  agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutUserInput
+  createdVersions?: Prisma.WorkspaceVersionCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
+  commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutWorkspaceAccessInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name?: string | null
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdWorkspaces?: Prisma.WorkspaceUncheckedCreateNestedManyWithoutCreatorInput
+  agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutUserInput
+  createdVersions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
+  commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutWorkspaceAccessInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWorkspaceAccessInput, Prisma.UserUncheckedCreateWithoutWorkspaceAccessInput>
+}
+
+export type UserUpsertWithoutWorkspaceAccessInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWorkspaceAccessInput, Prisma.UserUncheckedUpdateWithoutWorkspaceAccessInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWorkspaceAccessInput, Prisma.UserUncheckedCreateWithoutWorkspaceAccessInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWorkspaceAccessInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWorkspaceAccessInput, Prisma.UserUncheckedUpdateWithoutWorkspaceAccessInput>
+}
+
+export type UserUpdateWithoutWorkspaceAccessInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdWorkspaces?: Prisma.WorkspaceUpdateManyWithoutCreatorNestedInput
+  agentPrompts?: Prisma.AgentPromptUpdateManyWithoutUserNestedInput
+  createdVersions?: Prisma.WorkspaceVersionUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
+  commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWorkspaceAccessInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdWorkspaces?: Prisma.WorkspaceUncheckedUpdateManyWithoutCreatorNestedInput
+  agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutUserNestedInput
+  createdVersions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
+  commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1095,6 +1228,7 @@ export type UserCountOutputType = {
   comments: number
   resolvedComments: number
   commentMentions: number
+  workspaceAccess: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1105,6 +1239,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   comments?: boolean | UserCountOutputTypeCountCommentsArgs
   resolvedComments?: boolean | UserCountOutputTypeCountResolvedCommentsArgs
   commentMentions?: boolean | UserCountOutputTypeCountCommentMentionsArgs
+  workspaceAccess?: boolean | UserCountOutputTypeCountWorkspaceAccessArgs
 }
 
 /**
@@ -1166,6 +1301,13 @@ export type UserCountOutputTypeCountCommentMentionsArgs<ExtArgs extends runtime.
   where?: Prisma.CommentMentionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWorkspaceAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WorkspaceAccessWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1182,6 +1324,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
   resolvedComments?: boolean | Prisma.User$resolvedCommentsArgs<ExtArgs>
   commentMentions?: boolean | Prisma.User$commentMentionsArgs<ExtArgs>
+  workspaceAccess?: boolean | Prisma.User$workspaceAccessArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1224,6 +1367,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
   resolvedComments?: boolean | Prisma.User$resolvedCommentsArgs<ExtArgs>
   commentMentions?: boolean | Prisma.User$commentMentionsArgs<ExtArgs>
+  workspaceAccess?: boolean | Prisma.User$workspaceAccessArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1239,6 +1383,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     comments: Prisma.$CommentPayload<ExtArgs>[]
     resolvedComments: Prisma.$CommentPayload<ExtArgs>[]
     commentMentions: Prisma.$CommentMentionPayload<ExtArgs>[]
+    workspaceAccess: Prisma.$WorkspaceAccessPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1649,6 +1794,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   comments<T extends Prisma.User$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   resolvedComments<T extends Prisma.User$resolvedCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resolvedCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   commentMentions<T extends Prisma.User$commentMentionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentMentionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentMentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  workspaceAccess<T extends Prisma.User$workspaceAccessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workspaceAccessArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkspaceAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2243,6 +2389,30 @@ export type User$commentMentionsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.CommentMentionScalarFieldEnum | Prisma.CommentMentionScalarFieldEnum[]
+}
+
+/**
+ * User.workspaceAccess
+ */
+export type User$workspaceAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WorkspaceAccess
+   */
+  select?: Prisma.WorkspaceAccessSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WorkspaceAccess
+   */
+  omit?: Prisma.WorkspaceAccessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkspaceAccessInclude<ExtArgs> | null
+  where?: Prisma.WorkspaceAccessWhereInput
+  orderBy?: Prisma.WorkspaceAccessOrderByWithRelationInput | Prisma.WorkspaceAccessOrderByWithRelationInput[]
+  cursor?: Prisma.WorkspaceAccessWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WorkspaceAccessScalarFieldEnum | Prisma.WorkspaceAccessScalarFieldEnum[]
 }
 
 /**

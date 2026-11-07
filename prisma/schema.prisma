@@ -15,6 +15,13 @@ enum CommentAnchorType {
   SHAPE
 }
 
+// What an organization member can do in a workspace. Creators and org admins are always owners, so this
+// only describes everyone else. A VIEWER can read and comment but can't change anything.
+enum WorkspaceRole {
+  EDITOR
+  VIEWER
+}
+
 enum WorkspaceStatus {
   PLANNING
   IN_PROGRESS
@@ -22,8 +29,6 @@ enum WorkspaceStatus {
   DONE
 }
 
-// Where a saved version came from. Only MANUAL ones are kept forever; the other two are pruned
-// to the newest few per workspace (see actions/version.ts).
 enum VersionKind {
   MANUAL
   AUTO
@@ -39,8 +44,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Workspaces this user created — membership/roles for all workspaces live in Clerk Organizations,
-  // not here, so this is just "who to blame/bill" rather than an access-control source of truth.
+  
   createdWorkspaces Workspace[]
   agentPrompts      AgentPrompt[]
   createdVersions   WorkspaceVersion[]
@@ -48,6 +52,7 @@ model User {
   comments          Comment[]          @relation("CommentAuthor")
   resolvedComments  Comment[]          @relation("CommentResolver")
   commentMentions   CommentMention[]
+  workspaceAccess   WorkspaceAccess[]
 }
 
 model Workspace {
@@ -55,28 +60,25 @@ model Workspace {
   name        String
   description String?
   creatorId   String
-  // Clerk Organization id — the membership/role source of truth (org:admin, org:member,
-  // org:viewer). One org can own many workspaces (not unique); nullable because a solo user's
-  // personal workspace has no org behind it under Membership-optional mode.
+
   clerkOrgId  String?
-  // Dashboard kanban column + order within it. position is a float so a dropped card can
-  // take the midpoint between its neighbors — only the moved card ever gets written.
   status      WorkspaceStatus @default(PLANNING)
   position    Float           @default(0)
-  // Public read-only link token; null means sharing is off. Resetting it kills old links.
+
   shareToken  String?         @unique
   deletedAt   DateTime?
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
   creator      User          @relation(fields: [creatorId], references: [id], onDelete: Cascade)
-  // Every workspace is always exactly one doc + one canvas, paired — not a generic list of
-  // surfaces. Both are created alongside the workspace itself.
+
   doc          Doc?
   canvas       Canvas?
   agentPrompts AgentPrompt[]
   versions     WorkspaceVersion[]
   comments     Comment[]
+  memberRole   WorkspaceRole @default(EDITOR)
+  access       WorkspaceAccess[]
 
   @@index([creatorId])
   @@index([clerkOrgId])
@@ -201,4 +203,17 @@ model CommentMention {
 
   @@id([commentId, userId])
   @@index([userId, readAt])
+}
+
+// A per-person role that overrides Workspace.memberRole, for org workspaces.
+model WorkspaceAccess {
+  workspaceId String
+  userId      String
+  role        WorkspaceRole
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([workspaceId, userId])
+  @@index([userId])
 }

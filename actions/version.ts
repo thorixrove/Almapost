@@ -1,7 +1,7 @@
 "use server";
 
 import { checkUser } from "@/actions/check-user";
-import { canAccessWorkspace } from "@/lib/workspace-access";
+import { canAccessWorkspace, requireEditAccess } from "@/lib/workspace-access";
 import { prisma } from "@/lib/prisma";
 import { VersionKind } from "@/lib/generated/prisma/enums";
 import { countShapes, extractDocPreview } from "@/lib/version-snapshot";
@@ -52,7 +52,7 @@ export async function createVersion(
 ): Promise<CreateVersionResult> {
     const user = await checkUser()
     if (!user) throw new Error("Not signed in")
-    await requireAccess(workspaceId)
+    await requireEditAccess(workspaceId)
     if (!Object.values(VersionKind).includes(kind)) throw new Error("Invalid version")
 
     const [workspace, latest] = await Promise.all([
@@ -133,6 +133,6 @@ export async function getVersionContent(workspaceId: string, versionId: string) 
 }
 
 export async function deleteVersion(workspaceId: string, versionId: string) {
-    await requireAccess(workspaceId)
+    await requireEditAccess(workspaceId)
     await prisma.workspaceVersion.deleteMany({ where: { id: versionId, workspaceId } })
 }

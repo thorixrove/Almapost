@@ -405,7 +405,8 @@ export const ModelName = {
   WorkspaceVersion: 'WorkspaceVersion',
   WorkspaceTemplate: 'WorkspaceTemplate',
   Comment: 'Comment',
-  CommentMention: 'CommentMention'
+  CommentMention: 'CommentMention',
+  WorkspaceAccess: 'WorkspaceAccess'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -421,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "workspace" | "doc" | "canvas" | "agentPrompt" | "workspaceVersion" | "workspaceTemplate" | "comment" | "commentMention"
+    modelProps: "user" | "workspace" | "doc" | "canvas" | "agentPrompt" | "workspaceVersion" | "workspaceTemplate" | "comment" | "commentMention" | "workspaceAccess"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1091,6 +1092,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WorkspaceAccess: {
+      payload: Prisma.$WorkspaceAccessPayload<ExtArgs>
+      fields: Prisma.WorkspaceAccessFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WorkspaceAccessFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WorkspaceAccessFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload>
+        }
+        findFirst: {
+          args: Prisma.WorkspaceAccessFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WorkspaceAccessFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload>
+        }
+        findMany: {
+          args: Prisma.WorkspaceAccessFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload>[]
+        }
+        create: {
+          args: Prisma.WorkspaceAccessCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload>
+        }
+        createMany: {
+          args: Prisma.WorkspaceAccessCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WorkspaceAccessCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload>[]
+        }
+        delete: {
+          args: Prisma.WorkspaceAccessDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload>
+        }
+        update: {
+          args: Prisma.WorkspaceAccessUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload>
+        }
+        deleteMany: {
+          args: Prisma.WorkspaceAccessDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WorkspaceAccessUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WorkspaceAccessUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload>[]
+        }
+        upsert: {
+          args: Prisma.WorkspaceAccessUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkspaceAccessPayload>
+        }
+        aggregate: {
+          args: Prisma.WorkspaceAccessAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWorkspaceAccess>
+        }
+        groupBy: {
+          args: Prisma.WorkspaceAccessGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorkspaceAccessGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WorkspaceAccessCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorkspaceAccessCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1154,7 +1229,8 @@ export const WorkspaceScalarFieldEnum = {
   shareToken: 'shareToken',
   deletedAt: 'deletedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  memberRole: 'memberRole'
 } as const
 
 export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]
@@ -1248,6 +1324,15 @@ export const CommentMentionScalarFieldEnum = {
 } as const
 
 export type CommentMentionScalarFieldEnum = (typeof CommentMentionScalarFieldEnum)[keyof typeof CommentMentionScalarFieldEnum]
+
+
+export const WorkspaceAccessScalarFieldEnum = {
+  workspaceId: 'workspaceId',
+  userId: 'userId',
+  role: 'role'
+} as const
+
+export type WorkspaceAccessScalarFieldEnum = (typeof WorkspaceAccessScalarFieldEnum)[keyof typeof WorkspaceAccessScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1350,6 +1435,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WorkspaceRole'
+ */
+export type EnumWorkspaceRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkspaceRole'>
+    
+
+
+/**
+ * Reference to a field of type 'WorkspaceRole[]'
+ */
+export type ListEnumWorkspaceRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkspaceRole[]'>
     
 
 
@@ -1582,6 +1681,7 @@ export type GlobalOmitConfig = {
   workspaceTemplate?: Prisma.WorkspaceTemplateOmit
   comment?: Prisma.CommentOmit
   commentMention?: Prisma.CommentMentionOmit
+  workspaceAccess?: Prisma.WorkspaceAccessOmit
 }
 
 /* Types for Logging */

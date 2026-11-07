@@ -28,6 +28,7 @@ import { EntityTableShapeUtil } from "@/components/EntityTable/EntityTableShapeU
 import { AddEntityTableButton } from "@/components/EntityTable/AddEntityTableButton";
 import { snapArrowBindingToRow } from "@/components/EntityTable/snapArrowToRow";
 import { useWorkspaceEditors } from "@/components/WorkspaceEditorsContext";
+import { useWorkspaceRole } from "@/components/WorkspaceRoleContext";
 import { colorForUser } from "@/lib/utils";
 
 const SAVE_DEBOUNCE_MS = 1000;
