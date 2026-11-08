@@ -35,7 +35,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-type BoardWorkspace = WorkspaceCardData & { position: number };
+type BoardWorkspace = WorkspaceCardData & { position: number; canEdit: boolean };
 
 function columnItems(workspaces: BoardWorkspace[], status: WorkspaceStatus) {
   return workspaces.filter((w) => w.status === status).sort((a, b) => a.position - b.position);
@@ -235,7 +235,7 @@ export function WorkspaceBoard({
                       }`}
                   >
                     {columnWorkspaces.map((workspace, index) => (
-                      <Draggable key={workspace.id} draggableId={workspace.id} index={index}>
+                      <Draggable key={workspace.id} draggableId={workspace.id} index={index} isDragDisabled={!workspace.canEdit}>
                         {(provided, snapshot) => (
                           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                             <WorkspaceCard
@@ -254,18 +254,26 @@ export function WorkspaceBoard({
                                     </Button>
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent align="end">
-                                    <DropdownMenuItem onSelect={() => openFor(workspace, "edit")}>
-                                      <Pencil className="size-4" />
-                                      Edit
-                                    </DropdownMenuItem>
+
+                                    {workspace.canEdit && (
+                                      <DropdownMenuItem onSelect={() => openFor(workspace, "edit")}>
+                                        <Pencil className="size-4" />
+                                        Edit
+                                      </DropdownMenuItem>
+                                    )}
+
                                     <DropdownMenuItem onSelect={() => handleDuplicate(workspace)}>
                                       <Copy className="siex-4" />
                                       Duplicate
                                     </DropdownMenuItem>
+                                    
+                                    {workspace.canEdit && (
                                     <DropdownMenuItem onSelect={() => handleSaveAsTemplate(workspace)}>
                                       <BookmarkPlus className="size-4" />
                                       Template
                                     </DropdownMenuItem>
+                                  )}
+
                                     <DropdownMenuItem variant="destructive" onSelect={() => openFor(workspace, "delete")}>
                                       <Trash2 className="size-4" />
                                       Go to trash

@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { WorkspaceDialog } from "@/components/WorkspaceDialog";
 import { WorkspaceBoard } from "./_components/WorkspaceBoard";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import { canEditRole, resolveWorkspaceRole } from "@/lib/workspace-role";
 
 export default async function WorkspacesPage({
   searchParams,
@@ -20,13 +22,31 @@ export default async function WorkspacesPage({
 
   const { query, statuses } = parseFilterParams(await searchParams)
 
-  const { orgName, where } = await getWorkspaceScope(user.id);
-
-  const workspaces = await prisma.workspace.findMany({
+  const {orgId, orgRole} = await auth()
+  const {orgName, where} = await getWorkspaceScope(user.id)
+  const rows = await prisma.workspace.findMany({
     where,
-    select: { ...workspaceCardSelect, position: true },
-    orderBy: { position: "asc" },
-  });
+    select: {
+      ...workspaceCardSelect,
+      position: true,
+      creatorId: true,
+      memberRole: true,
+      access: {where: {userId: user.id}, select: {role: true}},
+    },
+    orderBy: {position: "asc"}
+  })
+
+  const workspaces = rows.map(({ creatorId, memberRole, access, ...workspace}) => ({
+    ...workspace,
+    canEdit: canEditRole(
+      resolveWorkspaceRole({
+        isCreator: creatorId === user.id,
+        isOrgAdmin: !!orgId && orgRole === "org:admin",
+        override: access[0]?.role ?? null,
+        memberRole,
+      })
+    ),
+  }))
 
   return (
     <div className="p-8">

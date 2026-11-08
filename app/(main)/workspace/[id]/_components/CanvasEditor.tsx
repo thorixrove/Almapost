@@ -48,13 +48,13 @@ type SyncOptions = { roomId: string; users?: Parameters<typeof useSyncDemo>[0]["
 // Chosen once at load, so it's always the same hook. Images are stored inside the room.
 const useCanvasSync = SYNC_URL
   ? ({ roomId, users }: SyncOptions) =>
-      useSync({
-        uri: `${SYNC_URL}/connect/${roomId}`,
-        assets: inlineBase64AssetStore,
-        shapeUtils: syncShapeUtils,
-        bindingUtils: defaultBindingUtils,
-        users,
-      })
+    useSync({
+      uri: `${SYNC_URL}/connect/${roomId}`,
+      assets: inlineBase64AssetStore,
+      shapeUtils: syncShapeUtils,
+      bindingUtils: defaultBindingUtils,
+      users,
+    })
   : ({ roomId, users }: SyncOptions) => useSyncDemo({ roomId, shapeUtils, users });
 
 // A cleaner, single-page canvas: no style panel, page menu or main menu, and a vertical toolbar
@@ -77,6 +77,7 @@ const SYNC_TIMEOUT_MS = 8000;
 function useCanvasShared(workspaceId: string, initialSnapshot: TLEditorSnapshot | null) {
   const saveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { setCanvasEditor } = useWorkspaceEditors();
+  const { readOnly } = useWorkspaceRole()
   const { user } = useUser();
 
   // Gives other collaborators this user's real name/avatar on their cursor instead of "New User".
@@ -113,9 +114,12 @@ function useCanvasShared(workspaceId: string, initialSnapshot: TLEditorSnapshot 
   }, [userId, userName]);
 
   const handleMount = (editor: Editor) => {
+    
     setCanvasEditor(editor);
-    // Seed from Postgres only when the canvas is empty, so a joining user doesn't overwrite
-    // what others have already drawn.
+    if (readOnly) {
+      editor.updateInstanceState({ isReadonly: true })
+      return () => setCanvasEditor(null)
+    }
     if (initialSnapshot && editor.getCurrentPageShapeIds().size === 0) {
       editor.loadSnapshot(initialSnapshot);
     }
