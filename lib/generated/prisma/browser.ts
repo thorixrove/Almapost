@@ -62,3 +62,8 @@ export type Comment = Prisma.CommentModel
  * 
  */
 export type CommentMention = Prisma.CommentMentionModel
+/**
+ * Model WorkspaceAccess
+ * 
+ */
+export type WorkspaceAccess = Prisma.WorkspaceAccessModel

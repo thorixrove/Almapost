@@ -54,7 +54,7 @@ function isWordChar(char: string | undefined) {
 }
 
 export function encodeMentions(text: string, picked: PickedMention[]) {
-    const candidates = { ...picked }.sort((a, b) => cleanName(b.name).length - cleanName(a.name).length)
+    const candidates = [...picked ].sort((a, b) => cleanName(b.name).length - cleanName(a.name).length)
     let result = ""
     let i = 0
     while (i < text.length) {

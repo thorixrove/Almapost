@@ -51,7 +51,7 @@ export function CommentComposer({
     const choose = (member: Mentionable) => {
         if (!query) return
         const insert = `@${member.name} `
-        const next = text.slice(0, query.start) + insert + text + text.slice(caret)
+        const next = text.slice(0, query.start) + insert + text.slice(caret)
         const nextCaret = query.start + insert.length
         setText(next)
         setCaret(nextCaret)

@@ -1,7 +1,7 @@
 "use server";
 
 import * as Y from "yjs";
-import { canAccessWorkspace } from "@/lib/workspace-access";
+import { requireEditAccess  } from "@/lib/workspace-access";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@/lib/generated/prisma/client";
 
@@ -12,7 +12,7 @@ export async function saveDocContent(
     yjsState: string,
     content: Prisma.InputJsonArray,
 ) {
-    if (!(await canAccessWorkspace(workspaceId))) throw new Error("Workspace not found")
+    await requireEditAccess(workspaceId)
 
     const incoming = Buffer.from(yjsState, "base64")
 

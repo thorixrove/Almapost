@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { checkUser } from "@/actions/check-user";
-import { canAccessWorkspace, canDeleteWorkspace } from "@/lib/workspace-access";
+import { requireEditAccess , canDeleteWorkspace } from "@/lib/workspace-access";
 import { scopeWhere } from "@/lib/workspace-scope";
 import { prisma } from "@/lib/prisma";
 import { getEntitlements, workspaceOwnerId, workspaceOwnerSelect } from "@/lib/billing";
@@ -21,7 +21,7 @@ export async function restoreWorkspace(
 ): Promise<{ restored: true } | { limit: LimitError }> {
     const user = await checkUser()
     if (!user) throw new Error("Not signed in")
-    if (!(await canAccessWorkspace(workspaceId, { includeTrashed: true }))) throw new Error("Workspace not found")
+    await requireEditAccess(workspaceId, { includeTrashed: true})
 
     const workspace = await prisma.workspace.findUniqueOrThrow({
         where: { id: workspaceId },

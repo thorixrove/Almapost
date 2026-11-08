@@ -15,6 +15,7 @@ import { useWorkspaceEditors } from "@/components/WorkspaceEditorsContext";
 import type { SupabaseYjsProvider } from "@/lib/supabase-yjs-provider";
 import { toBase64 } from "@/lib/base64";
 import { colorForUser } from "@/lib/utils";
+import { useWorkspaceRole } from "@/components/WorkspaceRoleContext";
 import { outpostDarkTheme } from "@/lib/blocknote-theme";
 
 const SAVE_DEBOUNCE_MS = 1000;
@@ -56,6 +57,7 @@ function CollaborativeEditor({
     provider: SupabaseYjsProvider
     user: { name: string; color: string }
 }) {
+    const { readOnly } = useWorkspaceRole()
     const fragment = doc.getXmlFragment("document-store")
     const editor = useCreateBlockNote({
         extensions: [CollaborationExtension({ fragment, user, provider })]
@@ -69,13 +71,14 @@ function CollaborativeEditor({
     }, [editor, setDocEditor])
 
     useEffect(() => {
-        if (fragment.length === 0 && initialContent?.length) {
+        // Menyemai isi awal berarti menulis ke dokumen bersama, jadi hanya untuk yang boleh mengedit.
+        if (!readOnly && fragment.length === 0 && initialContent?.length) {
             editor.replaceBlocks(editor.document, initialContent)
         }
-    }, [editor, fragment, initialContent])
-
+    }, [editor, fragment, initialContent, readOnly])
 
     useEffect(() => {
+        if (readOnly) return
         let timeout: ReturnType<typeof setTimeout> | undefined
         const save = () => {
             timeout = undefined
@@ -96,12 +99,12 @@ function CollaborativeEditor({
                 save()
             }
         }
-    }, [doc, editor, provider, workspaceId])
+    }, [doc, editor, provider, workspaceId, readOnly])
 
 
     return (
         <div className="h-full overflow-y-auto pt-6">
-            <BlockNoteView editor={editor} theme={outpostDarkTheme} />
+            <BlockNoteView editor={editor} theme={outpostDarkTheme} editable={!readOnly}/>
         </div>
     )
 

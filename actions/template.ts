@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
 import { checkUser } from "@/actions/check-user";
-import { canAccessWorkspace } from "@/lib/workspace-access";
+import { canAccessWorkspace, requireEditAccess  } from "@/lib/workspace-access";
 import { prisma } from "@/lib/prisma";
 import { getEntitlements } from "@/lib/billing";
 import { BUILTIN_TEMPLATES, findBuiltinTemplate } from "@/lib/builtin-templates";
@@ -57,7 +57,7 @@ export async function saveAsTemplate(
 ): Promise<{ template: { id: string; name: string } } | { full: true }> {
     const user = await checkUser()
     if (!user) throw new Error("Not signed in")
-    if (!(await canAccessWorkspace(workspaceId))) throw new Error("Workspace not found")
+    await requireEditAccess(workspaceId)
 
     const source = await prisma.workspace.findUniqueOrThrow({
         where: { id: workspaceId },

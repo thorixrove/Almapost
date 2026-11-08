@@ -4,7 +4,7 @@ import { randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
 import { checkUser } from "@/actions/check-user";
-import { canAccessWorkspace, canDeleteWorkspace } from "@/lib/workspace-access";
+import { canAccessWorkspace, canDeleteWorkspace, requireEditAccess } from "@/lib/workspace-access";
 import { scopeWhere } from "@/lib/workspace-scope";
 import { prisma } from "@/lib/prisma";
 import { WorkspaceStatus } from "@/lib/generated/prisma/enums";
@@ -59,7 +59,7 @@ export async function createWorkspace(
 
 
 export async function updateWorkspace(workspaceId: string, name: string, description?: string) {
-    if (!(await canAccessWorkspace(workspaceId))) throw new Error("Workspace not found")
+    await requireEditAccess(workspaceId)
 
     const trimmedName = name.trim()
     if (!trimmedName) throw new Error("Workspace name is required")
@@ -95,7 +95,7 @@ export async function moveWorkspace(workspaceId: string, status: WorkspaceStatus
         throw new Error("Invalid move")
     }
 
-    if (!(await canAccessWorkspace(workspaceId))) throw new Error("Invalid move")
+    await requireEditAccess(workspaceId, { notFoundMessage: "Invalid move" })
 
     await prisma.workspace.update({
         where: { id: workspaceId },
@@ -108,7 +108,7 @@ export async function setWorkspaceSharing(
     workspaceId: string,
     enabled: boolean
 ): Promise<{ shareToken: string | null } | { limit: LimitError }> {
-    if (!(await canAccessWorkspace(workspaceId))) throw new Error("Workspace not found")
+    await requireEditAccess(workspaceId)
 
     if (enabled && !(await getEntitlements(await getWorkspaceOwnerId(workspaceId))).publicSharing) {
         return { limit: "sharing" }
