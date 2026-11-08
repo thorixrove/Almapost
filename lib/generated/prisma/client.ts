@@ -91,3 +91,13 @@ export type CommentMention = Prisma.CommentMentionModel
  * 
  */
 export type WorkspaceAccess = Prisma.WorkspaceAccessModel
+/**
+ * Model ActivityEvent
+ * 
+ */
+export type ActivityEvent = Prisma.ActivityEventModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel

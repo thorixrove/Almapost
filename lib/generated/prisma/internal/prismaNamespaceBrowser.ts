@@ -60,7 +60,9 @@ export const ModelName = {
   WorkspaceTemplate: 'WorkspaceTemplate',
   Comment: 'Comment',
   CommentMention: 'CommentMention',
-  WorkspaceAccess: 'WorkspaceAccess'
+  WorkspaceAccess: 'WorkspaceAccess',
+  ActivityEvent: 'ActivityEvent',
+  Notification: 'Notification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -207,6 +209,32 @@ export const WorkspaceAccessScalarFieldEnum = {
 } as const
 
 export type WorkspaceAccessScalarFieldEnum = (typeof WorkspaceAccessScalarFieldEnum)[keyof typeof WorkspaceAccessScalarFieldEnum]
+
+
+export const ActivityEventScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  actorId: 'actorId',
+  type: 'type',
+  data: 'data',
+  createdAt: 'createdAt'
+} as const
+
+export type ActivityEventScalarFieldEnum = (typeof ActivityEventScalarFieldEnum)[keyof typeof ActivityEventScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  workspaceId: 'workspaceId',
+  actorId: 'actorId',
+  type: 'type',
+  data: 'data',
+  createdAt: 'createdAt',
+  readAt: 'readAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
 export const SortOrder = {
