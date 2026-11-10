@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import type { Block } from "@blocknote/core";
 import type { TLEditorSnapshot } from "tldraw";
 import { prisma } from "@/lib/prisma";
-import { canAccessWorkspace, getWorkspaceRole } from "@/lib/workspace-access";
+import { getWorkspaceRole } from "@/lib/workspace-access";
 import { canEditRole } from "@/lib/workspace-role";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ import { CommentPanel } from "./_components/CommentsPanel";
 import { WorkspaceRoleProvider } from "@/components/WorkspaceRoleContext";
 import { AccessDialog } from "./_components/AccessDialog";
 import { ActivityDialog } from "./_components/ActivityDialog";
+import { NotificationsBell } from "@/components/NotificationsBell";
 
 type ViewMode = "doc" | "canvas" | "both";
 
@@ -37,13 +38,8 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
     const { view: viewParam, prompt } = await searchParams;
     const view = parseViewMode(viewParam);
 
-    // 404 rather than 403 so outsiders can't tell whether a workspace id exists.
-    const role = await getWorkspaceRole(id);
-    if (!role) notFound();
-    const canEdit = canEditRole(role);
-
-    const [hasAccess, workspace] = await Promise.all([
-        canAccessWorkspace(id),
+    const [role, workspace] = await Promise.all([
+        getWorkspaceRole(id),
         prisma.workspace.findUnique({
             where: { id },
             select: {
@@ -52,11 +48,12 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
                 ...workspaceOwnerSelect,
                 doc: { select: { content: true, yjsState: true } },
                 canvas: { select: { content: true } }
-            },
-        }),
+            }
+        })
     ])
 
-    if (!hasAccess || !workspace) notFound()
+    if (!role || !workspace) notFound()
+    const canEdit = canEditRole(role)
 
 
     const entitlements = await getEntitlements(workspaceOwnerId(workspace))
@@ -103,6 +100,7 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
                         <div className="flex flex-1 items-center justify-end gap-2">
                             {!canEdit && <Badge variant="secondary">View Only</Badge>}
                             <PlanButton upgradeOnlyWhenOut />
+                            <NotificationsBell />
                             {canEdit && <VersionHistoryDialog workspaceId={id} />}
                             <CommentPanel workspaceId={id} />
                             <ActivityDialog workspaceId={id} />
