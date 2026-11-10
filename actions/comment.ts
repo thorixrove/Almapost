@@ -16,6 +16,8 @@ import { prisma } from "@/lib/prisma";
 import { canAccessWorkspace } from "@/lib/workspace-access";
 import { getMentionableMembers } from "@/lib/workspace-members";
 import { auth } from "@clerk/nextjs/server";
+import { recordActivity } from "@/lib/actor";
+import { notify } from "@/lib/notification-store";
 
 async function context(workspaceId: string) {
     const user = await checkUser()
@@ -63,15 +65,22 @@ export async function postComment(
     options?: { parentId?: string; anchor?: Anchor }
 ) {
     const { user, workspace } = await context(workspaceId)
-
-    return createComment(prisma, {
+    const created = await createComment(prisma, {
         workspaceId,
         authorId: user.id,
         body,
         parentId: options?.parentId ?? null,
         anchor: options?.anchor ?? null,
-        mentionableIds: await mentionableIdSet(workspace, user.id),
+        mentionableIds: await mentionableIdSet(workspace, user.id)
     })
+
+    await recordActivity(workspaceId, "COMMENT_ADDED", { reply: !!options?.parentId }, user.id)
+    if (options?.parentId) {
+        // Pembuka thread diberi tahu ada balasan (notify tidak memberi tahu diri sendiri).
+        const root = await prisma.comment.findUnique({ where: { id: options.parentId }, select: { authorId: true } })
+        if (root) await notify(prisma, { userId: root.authorId, workspaceId, actorId: user.id, type: "COMMENT_REPLY" })
+    }
+    return created
 }
 
 export async function editComment(workspaceId: string, commentId: string, body: string) {
@@ -104,6 +113,12 @@ export async function removeComment(workspaceId: string, commentId: string) {
 export async function resolveComment(workspaceId: string, commentId: string, resolved: boolean) {
     const { user } = await context(workspaceId)
     await setThreadResolved(prisma, { commentId, workspaceId, userId: user.id, resolved })
+
+    await recordActivity(workspaceId, "THREAD_RESOLVED", {resolved}, user.id)
+    if (resolved) {
+        const root = await prisma.comment.findUnique({ where: { id: commentId}, select: {authorId: true}})
+        if (root) await notify(prisma, { userId: root.authorId, workspaceId, actorId: user.id, type: "THREAD_RESOLVED"})
+    }
 }
 
 

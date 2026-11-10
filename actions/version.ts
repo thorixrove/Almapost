@@ -5,6 +5,7 @@ import { canAccessWorkspace, requireEditAccess } from "@/lib/workspace-access";
 import { prisma } from "@/lib/prisma";
 import { VersionKind } from "@/lib/generated/prisma/enums";
 import { countShapes, extractDocPreview } from "@/lib/version-snapshot";
+import { recordActivity } from "@/lib/actor";
 
 // Versi MANUAL tidak pernah dihapus otomatis, tapi dibatasi jumlahnya.
 const MAX_MANUAL_VERSIONS = 50
@@ -104,6 +105,12 @@ export async function createVersion(
         },
         select: { id: true }
     })
+
+    if (kind === "MANUAL") {
+        await recordActivity(workspaceId, "VERSION_SAVED", label?.trim() ? {label: label.trim().slice(0, MAX_LABEL_LENGTH)} : undefined, user.id)
+    } else if (kind === "BEFORE_RESTORE") {
+        await recordActivity(workspaceId, "VERSION_RESTORED", label?.trim() ? {label: label.trim().slice(0, MAX_LABEL_LENGTH)} : undefined, user.id)
+    }
 
     if (kind !== "MANUAL") {
         const stale = await prisma.workspaceVersion.findMany({

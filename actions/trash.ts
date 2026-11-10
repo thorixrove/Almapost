@@ -7,6 +7,7 @@ import { scopeWhere } from "@/lib/workspace-scope";
 import { prisma } from "@/lib/prisma";
 import { getEntitlements, workspaceOwnerId, workspaceOwnerSelect } from "@/lib/billing";
 import { FREE_WORKSPACE_LIMIT, type LimitError } from "@/lib/plan-limits";
+import { recordActivity } from "@/lib/actor";
 
 function revalidateTrashViews() {
     revalidatePath("/dashboard")
@@ -46,6 +47,8 @@ export async function restoreWorkspace(
         where: { id: workspaceId },
         data: { deletedAt: null, position: top ? top.position - 1 : 0 }
     })
+
+    await recordActivity(workspaceId, "WORKSPACE_RESTORED", undefined, user.id)
 
     revalidateTrashViews()
     return { restored: true }

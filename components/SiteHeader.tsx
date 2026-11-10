@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Show, SignInButton, SignUpButton, UserButton, OrganizationSwitcher, useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { PlanButton } from "@/components/PlanButton";
-import { MentionBell } from "@/components/MentionsBell";
+import { NotificationsBell } from "@/components/NotificationsBell";
 
 // Shared across every route (root layout). The landing page gets its section links and a way into
 // the app; inside the app, the logo leads home to the dashboard and the plan button takes its place.
@@ -48,7 +48,7 @@ export function SiteHeader() {
             </Button>
           ) : (
             <>
-            <MentionBell/>
+            <NotificationsBell/>
             <PlanButton />
             </>
           )}

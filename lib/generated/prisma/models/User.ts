@@ -206,6 +206,9 @@ export type UserWhereInput = {
   resolvedComments?: Prisma.CommentListRelationFilter
   commentMentions?: Prisma.CommentMentionListRelationFilter
   workspaceAccess?: Prisma.WorkspaceAccessListRelationFilter
+  activity?: Prisma.ActivityEventListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
+  actedNotifications?: Prisma.NotificationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -224,6 +227,9 @@ export type UserOrderByWithRelationInput = {
   resolvedComments?: Prisma.CommentOrderByRelationAggregateInput
   commentMentions?: Prisma.CommentMentionOrderByRelationAggregateInput
   workspaceAccess?: Prisma.WorkspaceAccessOrderByRelationAggregateInput
+  activity?: Prisma.ActivityEventOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  actedNotifications?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -245,6 +251,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   resolvedComments?: Prisma.CommentListRelationFilter
   commentMentions?: Prisma.CommentMentionListRelationFilter
   workspaceAccess?: Prisma.WorkspaceAccessListRelationFilter
+  activity?: Prisma.ActivityEventListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
+  actedNotifications?: Prisma.NotificationListRelationFilter
 }, "id" | "clerkId" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -289,6 +298,9 @@ export type UserCreateInput = {
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -307,6 +319,9 @@ export type UserUncheckedCreateInput = {
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserUpdateInput = {
@@ -325,6 +340,9 @@ export type UserUpdateInput = {
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -343,6 +361,9 @@ export type UserUncheckedUpdateInput = {
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -543,6 +564,52 @@ export type UserUpdateOneRequiredWithoutWorkspaceAccessNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWorkspaceAccessInput, Prisma.UserUpdateWithoutWorkspaceAccessInput>, Prisma.UserUncheckedUpdateWithoutWorkspaceAccessInput>
 }
 
+export type UserCreateNestedOneWithoutActivityInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutActivityInput, Prisma.UserUncheckedCreateWithoutActivityInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActivityInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutActivityNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutActivityInput, Prisma.UserUncheckedCreateWithoutActivityInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActivityInput
+  upsert?: Prisma.UserUpsertWithoutActivityInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutActivityInput, Prisma.UserUpdateWithoutActivityInput>, Prisma.UserUncheckedUpdateWithoutActivityInput>
+}
+
+export type UserCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutActedNotificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutActedNotificationsInput, Prisma.UserUncheckedCreateWithoutActedNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActedNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.UserUpsertWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput, Prisma.UserUpdateWithoutNotificationsInput>, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserUpdateOneWithoutActedNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutActedNotificationsInput, Prisma.UserUncheckedCreateWithoutActedNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutActedNotificationsInput
+  upsert?: Prisma.UserUpsertWithoutActedNotificationsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutActedNotificationsInput, Prisma.UserUpdateWithoutActedNotificationsInput>, Prisma.UserUncheckedUpdateWithoutActedNotificationsInput>
+}
+
 export type UserCreateWithoutCreatedWorkspacesInput = {
   id?: string
   clerkId: string
@@ -558,6 +625,9 @@ export type UserCreateWithoutCreatedWorkspacesInput = {
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedWorkspacesInput = {
@@ -575,6 +645,9 @@ export type UserUncheckedCreateWithoutCreatedWorkspacesInput = {
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedWorkspacesInput = {
@@ -608,6 +681,9 @@ export type UserUpdateWithoutCreatedWorkspacesInput = {
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedWorkspacesInput = {
@@ -625,6 +701,9 @@ export type UserUncheckedUpdateWithoutCreatedWorkspacesInput = {
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutAgentPromptsInput = {
@@ -642,6 +721,9 @@ export type UserCreateWithoutAgentPromptsInput = {
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutAgentPromptsInput = {
@@ -659,6 +741,9 @@ export type UserUncheckedCreateWithoutAgentPromptsInput = {
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutAgentPromptsInput = {
@@ -692,6 +777,9 @@ export type UserUpdateWithoutAgentPromptsInput = {
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAgentPromptsInput = {
@@ -709,6 +797,9 @@ export type UserUncheckedUpdateWithoutAgentPromptsInput = {
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutCreatedVersionsInput = {
@@ -726,6 +817,9 @@ export type UserCreateWithoutCreatedVersionsInput = {
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedVersionsInput = {
@@ -743,6 +837,9 @@ export type UserUncheckedCreateWithoutCreatedVersionsInput = {
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedVersionsInput = {
@@ -776,6 +873,9 @@ export type UserUpdateWithoutCreatedVersionsInput = {
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedVersionsInput = {
@@ -793,6 +893,9 @@ export type UserUncheckedUpdateWithoutCreatedVersionsInput = {
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutCreatedTemplatesInput = {
@@ -810,6 +913,9 @@ export type UserCreateWithoutCreatedTemplatesInput = {
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedTemplatesInput = {
@@ -827,6 +933,9 @@ export type UserUncheckedCreateWithoutCreatedTemplatesInput = {
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedTemplatesInput = {
@@ -860,6 +969,9 @@ export type UserUpdateWithoutCreatedTemplatesInput = {
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedTemplatesInput = {
@@ -877,6 +989,9 @@ export type UserUncheckedUpdateWithoutCreatedTemplatesInput = {
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -894,6 +1009,9 @@ export type UserCreateWithoutCommentsInput = {
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -911,6 +1029,9 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -933,6 +1054,9 @@ export type UserCreateWithoutResolvedCommentsInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutResolvedCommentsInput = {
@@ -950,6 +1074,9 @@ export type UserUncheckedCreateWithoutResolvedCommentsInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutResolvedCommentsInput = {
@@ -983,6 +1110,9 @@ export type UserUpdateWithoutCommentsInput = {
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -1000,6 +1130,9 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserUpsertWithoutResolvedCommentsInput = {
@@ -1028,6 +1161,9 @@ export type UserUpdateWithoutResolvedCommentsInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutResolvedCommentsInput = {
@@ -1045,6 +1181,9 @@ export type UserUncheckedUpdateWithoutResolvedCommentsInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutCommentMentionsInput = {
@@ -1062,6 +1201,9 @@ export type UserCreateWithoutCommentMentionsInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutCommentMentionsInput = {
@@ -1079,6 +1221,9 @@ export type UserUncheckedCreateWithoutCommentMentionsInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutCommentMentionsInput = {
@@ -1112,6 +1257,9 @@ export type UserUpdateWithoutCommentMentionsInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentMentionsInput = {
@@ -1129,6 +1277,9 @@ export type UserUncheckedUpdateWithoutCommentMentionsInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutWorkspaceAccessInput = {
@@ -1146,6 +1297,9 @@ export type UserCreateWithoutWorkspaceAccessInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutWorkspaceAccessInput = {
@@ -1163,6 +1317,9 @@ export type UserUncheckedCreateWithoutWorkspaceAccessInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
   resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
   commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutWorkspaceAccessInput = {
@@ -1196,6 +1353,9 @@ export type UserUpdateWithoutWorkspaceAccessInput = {
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWorkspaceAccessInput = {
@@ -1213,6 +1373,297 @@ export type UserUncheckedUpdateWithoutWorkspaceAccessInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
   resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
   commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutActivityInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name?: string | null
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdWorkspaces?: Prisma.WorkspaceCreateNestedManyWithoutCreatorInput
+  agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutUserInput
+  createdVersions?: Prisma.WorkspaceVersionCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
+  commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutActivityInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name?: string | null
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdWorkspaces?: Prisma.WorkspaceUncheckedCreateNestedManyWithoutCreatorInput
+  agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutUserInput
+  createdVersions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
+  commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutActivityInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutActivityInput, Prisma.UserUncheckedCreateWithoutActivityInput>
+}
+
+export type UserUpsertWithoutActivityInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutActivityInput, Prisma.UserUncheckedUpdateWithoutActivityInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutActivityInput, Prisma.UserUncheckedCreateWithoutActivityInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutActivityInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutActivityInput, Prisma.UserUncheckedUpdateWithoutActivityInput>
+}
+
+export type UserUpdateWithoutActivityInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdWorkspaces?: Prisma.WorkspaceUpdateManyWithoutCreatorNestedInput
+  agentPrompts?: Prisma.AgentPromptUpdateManyWithoutUserNestedInput
+  createdVersions?: Prisma.WorkspaceVersionUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
+  commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutActivityInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdWorkspaces?: Prisma.WorkspaceUncheckedUpdateManyWithoutCreatorNestedInput
+  agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutUserNestedInput
+  createdVersions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
+  commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutNotificationsInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name?: string | null
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdWorkspaces?: Prisma.WorkspaceCreateNestedManyWithoutCreatorInput
+  agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutUserInput
+  createdVersions?: Prisma.WorkspaceVersionCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
+  commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name?: string | null
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdWorkspaces?: Prisma.WorkspaceUncheckedCreateNestedManyWithoutCreatorInput
+  agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutUserInput
+  createdVersions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
+  commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+}
+
+export type UserCreateWithoutActedNotificationsInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name?: string | null
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdWorkspaces?: Prisma.WorkspaceCreateNestedManyWithoutCreatorInput
+  agentPrompts?: Prisma.AgentPromptCreateNestedManyWithoutUserInput
+  createdVersions?: Prisma.WorkspaceVersionCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateCreateNestedManyWithoutCreatorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  resolvedComments?: Prisma.CommentCreateNestedManyWithoutResolvedByInput
+  commentMentions?: Prisma.CommentMentionCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutActedNotificationsInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name?: string | null
+  imageUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdWorkspaces?: Prisma.WorkspaceUncheckedCreateNestedManyWithoutCreatorInput
+  agentPrompts?: Prisma.AgentPromptUncheckedCreateNestedManyWithoutUserInput
+  createdVersions?: Prisma.WorkspaceVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedCreateNestedManyWithoutCreatorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  resolvedComments?: Prisma.CommentUncheckedCreateNestedManyWithoutResolvedByInput
+  commentMentions?: Prisma.CommentMentionUncheckedCreateNestedManyWithoutUserInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedCreateNestedManyWithoutUserInput
+  activity?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutActorInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutActedNotificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutActedNotificationsInput, Prisma.UserUncheckedCreateWithoutActedNotificationsInput>
+}
+
+export type UserUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdWorkspaces?: Prisma.WorkspaceUpdateManyWithoutCreatorNestedInput
+  agentPrompts?: Prisma.AgentPromptUpdateManyWithoutUserNestedInput
+  createdVersions?: Prisma.WorkspaceVersionUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
+  commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdWorkspaces?: Prisma.WorkspaceUncheckedUpdateManyWithoutCreatorNestedInput
+  agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutUserNestedInput
+  createdVersions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
+  commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserUpsertWithoutActedNotificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutActedNotificationsInput, Prisma.UserUncheckedUpdateWithoutActedNotificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutActedNotificationsInput, Prisma.UserUncheckedCreateWithoutActedNotificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutActedNotificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutActedNotificationsInput, Prisma.UserUncheckedUpdateWithoutActedNotificationsInput>
+}
+
+export type UserUpdateWithoutActedNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdWorkspaces?: Prisma.WorkspaceUpdateManyWithoutCreatorNestedInput
+  agentPrompts?: Prisma.AgentPromptUpdateManyWithoutUserNestedInput
+  createdVersions?: Prisma.WorkspaceVersionUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUpdateManyWithoutCreatorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  resolvedComments?: Prisma.CommentUpdateManyWithoutResolvedByNestedInput
+  commentMentions?: Prisma.CommentMentionUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutActedNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdWorkspaces?: Prisma.WorkspaceUncheckedUpdateManyWithoutCreatorNestedInput
+  agentPrompts?: Prisma.AgentPromptUncheckedUpdateManyWithoutUserNestedInput
+  createdVersions?: Prisma.WorkspaceVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdTemplates?: Prisma.WorkspaceTemplateUncheckedUpdateManyWithoutCreatorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  resolvedComments?: Prisma.CommentUncheckedUpdateManyWithoutResolvedByNestedInput
+  commentMentions?: Prisma.CommentMentionUncheckedUpdateManyWithoutUserNestedInput
+  workspaceAccess?: Prisma.WorkspaceAccessUncheckedUpdateManyWithoutUserNestedInput
+  activity?: Prisma.ActivityEventUncheckedUpdateManyWithoutActorNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1229,6 +1680,9 @@ export type UserCountOutputType = {
   resolvedComments: number
   commentMentions: number
   workspaceAccess: number
+  activity: number
+  notifications: number
+  actedNotifications: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1240,6 +1694,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   resolvedComments?: boolean | UserCountOutputTypeCountResolvedCommentsArgs
   commentMentions?: boolean | UserCountOutputTypeCountCommentMentionsArgs
   workspaceAccess?: boolean | UserCountOutputTypeCountWorkspaceAccessArgs
+  activity?: boolean | UserCountOutputTypeCountActivityArgs
+  notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+  actedNotifications?: boolean | UserCountOutputTypeCountActedNotificationsArgs
 }
 
 /**
@@ -1308,6 +1765,27 @@ export type UserCountOutputTypeCountWorkspaceAccessArgs<ExtArgs extends runtime.
   where?: Prisma.WorkspaceAccessWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountActivityArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActivityEventWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountActedNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1325,6 +1803,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   resolvedComments?: boolean | Prisma.User$resolvedCommentsArgs<ExtArgs>
   commentMentions?: boolean | Prisma.User$commentMentionsArgs<ExtArgs>
   workspaceAccess?: boolean | Prisma.User$workspaceAccessArgs<ExtArgs>
+  activity?: boolean | Prisma.User$activityArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  actedNotifications?: boolean | Prisma.User$actedNotificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1368,6 +1849,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   resolvedComments?: boolean | Prisma.User$resolvedCommentsArgs<ExtArgs>
   commentMentions?: boolean | Prisma.User$commentMentionsArgs<ExtArgs>
   workspaceAccess?: boolean | Prisma.User$workspaceAccessArgs<ExtArgs>
+  activity?: boolean | Prisma.User$activityArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  actedNotifications?: boolean | Prisma.User$actedNotificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1384,6 +1868,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     resolvedComments: Prisma.$CommentPayload<ExtArgs>[]
     commentMentions: Prisma.$CommentMentionPayload<ExtArgs>[]
     workspaceAccess: Prisma.$WorkspaceAccessPayload<ExtArgs>[]
+    activity: Prisma.$ActivityEventPayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    actedNotifications: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1795,6 +2282,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   resolvedComments<T extends Prisma.User$resolvedCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$resolvedCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   commentMentions<T extends Prisma.User$commentMentionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentMentionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentMentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workspaceAccess<T extends Prisma.User$workspaceAccessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workspaceAccessArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkspaceAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  activity<T extends Prisma.User$activityArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$activityArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  actedNotifications<T extends Prisma.User$actedNotificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$actedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2413,6 +2903,78 @@ export type User$workspaceAccessArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.WorkspaceAccessScalarFieldEnum | Prisma.WorkspaceAccessScalarFieldEnum[]
+}
+
+/**
+ * User.activity
+ */
+export type User$activityArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ActivityEvent
+   */
+  select?: Prisma.ActivityEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ActivityEvent
+   */
+  omit?: Prisma.ActivityEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActivityEventInclude<ExtArgs> | null
+  where?: Prisma.ActivityEventWhereInput
+  orderBy?: Prisma.ActivityEventOrderByWithRelationInput | Prisma.ActivityEventOrderByWithRelationInput[]
+  cursor?: Prisma.ActivityEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActivityEventScalarFieldEnum | Prisma.ActivityEventScalarFieldEnum[]
+}
+
+/**
+ * User.notifications
+ */
+export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * User.actedNotifications
+ */
+export type User$actedNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**

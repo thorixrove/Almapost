@@ -406,7 +406,9 @@ export const ModelName = {
   WorkspaceTemplate: 'WorkspaceTemplate',
   Comment: 'Comment',
   CommentMention: 'CommentMention',
-  WorkspaceAccess: 'WorkspaceAccess'
+  WorkspaceAccess: 'WorkspaceAccess',
+  ActivityEvent: 'ActivityEvent',
+  Notification: 'Notification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -422,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "workspace" | "doc" | "canvas" | "agentPrompt" | "workspaceVersion" | "workspaceTemplate" | "comment" | "commentMention" | "workspaceAccess"
+    modelProps: "user" | "workspace" | "doc" | "canvas" | "agentPrompt" | "workspaceVersion" | "workspaceTemplate" | "comment" | "commentMention" | "workspaceAccess" | "activityEvent" | "notification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1166,6 +1168,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ActivityEvent: {
+      payload: Prisma.$ActivityEventPayload<ExtArgs>
+      fields: Prisma.ActivityEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ActivityEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ActivityEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload>
+        }
+        findFirst: {
+          args: Prisma.ActivityEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ActivityEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload>
+        }
+        findMany: {
+          args: Prisma.ActivityEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload>[]
+        }
+        create: {
+          args: Prisma.ActivityEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload>
+        }
+        createMany: {
+          args: Prisma.ActivityEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ActivityEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload>[]
+        }
+        delete: {
+          args: Prisma.ActivityEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload>
+        }
+        update: {
+          args: Prisma.ActivityEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.ActivityEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ActivityEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ActivityEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.ActivityEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActivityEventPayload>
+        }
+        aggregate: {
+          args: Prisma.ActivityEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateActivityEvent>
+        }
+        groupBy: {
+          args: Prisma.ActivityEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActivityEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ActivityEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActivityEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    Notification: {
+      payload: Prisma.$NotificationPayload<ExtArgs>
+      fields: Prisma.NotificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NotificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        findFirst: {
+          args: Prisma.NotificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        findMany: {
+          args: Prisma.NotificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+        }
+        create: {
+          args: Prisma.NotificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        createMany: {
+          args: Prisma.NotificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.NotificationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+        }
+        delete: {
+          args: Prisma.NotificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        update: {
+          args: Prisma.NotificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.NotificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NotificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.NotificationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+        }
+        upsert: {
+          args: Prisma.NotificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        aggregate: {
+          args: Prisma.NotificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNotification>
+        }
+        groupBy: {
+          args: Prisma.NotificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NotificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1333,6 +1483,32 @@ export const WorkspaceAccessScalarFieldEnum = {
 } as const
 
 export type WorkspaceAccessScalarFieldEnum = (typeof WorkspaceAccessScalarFieldEnum)[keyof typeof WorkspaceAccessScalarFieldEnum]
+
+
+export const ActivityEventScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  actorId: 'actorId',
+  type: 'type',
+  data: 'data',
+  createdAt: 'createdAt'
+} as const
+
+export type ActivityEventScalarFieldEnum = (typeof ActivityEventScalarFieldEnum)[keyof typeof ActivityEventScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  workspaceId: 'workspaceId',
+  actorId: 'actorId',
+  type: 'type',
+  data: 'data',
+  createdAt: 'createdAt',
+  readAt: 'readAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1682,6 +1858,8 @@ export type GlobalOmitConfig = {
   comment?: Prisma.CommentOmit
   commentMention?: Prisma.CommentMentionOmit
   workspaceAccess?: Prisma.WorkspaceAccessOmit
+  activityEvent?: Prisma.ActivityEventOmit
+  notification?: Prisma.NotificationOmit
 }
 
 /* Types for Logging */
