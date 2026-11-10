@@ -15,7 +15,7 @@ import {
 
 const REFRESH_MS = 5 * 60 * 1000
 
-export function NotificationBell() {
+export function NotificationsBell() {
     const [items, setItems] = useState<NotificationListItem[]>([])
 
     useEffect(() => {

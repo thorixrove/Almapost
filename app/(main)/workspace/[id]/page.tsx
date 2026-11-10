@@ -21,6 +21,7 @@ import { VersionHistoryDialog } from "./_components/VersionHistoryDialog"
 import { CommentPanel } from "./_components/CommentsPanel";
 import { WorkspaceRoleProvider } from "@/components/WorkspaceRoleContext";
 import { AccessDialog } from "./_components/AccessDialog";
+import { ActivityDialog } from "./_components/ActivityDialog";
 
 type ViewMode = "doc" | "canvas" | "both";
 
@@ -104,6 +105,7 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
                             <PlanButton upgradeOnlyWhenOut />
                             {canEdit && <VersionHistoryDialog workspaceId={id} />}
                             <CommentPanel workspaceId={id} />
+                            <ActivityDialog workspaceId={id} />
                             {role === "OWNER" && workspace.clerkOrgId && <AccessDialog workspaceId={id} />}
                             {canEdit &&
                                 <ShareDialog

@@ -5,7 +5,8 @@ import { getWorkspaceRole } from "@/lib/workspace-access";
 import { prisma } from "@/lib/prisma";
 import { WorkspaceRole } from "@/lib/generated/prisma/enums";
 import { listAccessOverrides, setDefaultMemberRole, setMemberAccess } from "@/lib/workspace-role";
-import { tr } from "zod/v4/locales";
+import { getActorId, recordActivity } from "@/lib/actor";
+import { notify } from "@/lib/notification-store";
 
 async function requireOwner(workspaceId: string) {
     const role = await getWorkspaceRole(workspaceId)
@@ -74,17 +75,35 @@ export type AccessSettings = Awaited<ReturnType<typeof getAccessSettings>>
 
 export async function changeDefaultRole(workspaceId: string, role: WorkspaceRole) {
     await requireOwner(workspaceId)
-    await setDefaultMemberRole(prisma, { workspaceId, role: parseRole(role) })
+    const parsedRole = parseRole(role)
+    await setDefaultMemberRole(prisma, { workspaceId, role: parsedRole })
+
+    // Perubahan bawaan mengenai semua anggota, jadi hanya dicatat dan tidak mengirim notifikasi satu per satu.
+    await recordActivity(workspaceId, "ACCESS_CHANGED", { scope: "default", role: parsedRole })
 }
 
 export async function changeMemberAccess(workspaceId: string, userId: string, role: WorkspaceRole | null) {
     const workspace = await requireOwner(workspaceId)
     const parsedRole = role === null ? null : parseRole(role)
 
-    const target = await prisma.user.findUnique({ where: { id: userId }, select: { id: true, clerkId: true } })
+    const target = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { id: true, clerkId: true, name: true, email: true },
+    })
     const membership = target && target && (await orgMemberships(workspace.clerkOrgId)).find((m) => m.clerkId === target.clerkId)
     if (!target || !membership) throw new Error("That person isn't a member of this organization")
     if (target.id === workspace.creatorId || membership.isAdmin) throw new Error("Owner can't be restricted")
 
     await setMemberAccess(prisma, { workspaceId, userId: target.id, role: parsedRole })
+    await setMemberAccess(prisma, { workspaceId, userId: target.id, role: parsedRole })
+
+    const actorId = await getActorId()
+    await recordActivity(
+        workspaceId,
+        "ACCESS_CHANGED",
+        { scope: "member", target: target.name?.trim() || target.email.split("@")[0], role: parsedRole },
+        actorId
+    )
+    // Orang yang perannya diubah diberi tahu.
+    await notify(prisma, { userId: target.id, workspaceId, actorId, type: "ROLE_CHANGED", data: { role: parsedRole } })
 }

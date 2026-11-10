@@ -3,13 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
 import { checkUser } from "@/actions/check-user";
-import { canAccessWorkspace, requireEditAccess  } from "@/lib/workspace-access";
+import { canAccessWorkspace, requireEditAccess } from "@/lib/workspace-access";
 import { prisma } from "@/lib/prisma";
 import { getEntitlements } from "@/lib/billing";
 import { BUILTIN_TEMPLATES, findBuiltinTemplate } from "@/lib/builtin-templates";
 import { MAX_TEMPLATES_PER_SCOPE, templateScope } from "@/lib/template-scope";
 import { asJsonInput, createWorkspaceWithContent } from "@/lib/workspace-create";
 import type { LimitError } from "@/lib/plan-limits";
+import { recordActivity } from "@/lib/actor";
 
 const MAX_NAME_LENGTH = 120
 
@@ -47,10 +48,15 @@ export async function duplicateWorkspace(
         unlimited: unlimitedWorkspaces,
     })
 
-    if ("workspace" in result) revalidateWorkspaceLists()
+    if ("workspace" in result) {
+        await recordActivity(workspaceId, "WORKSPACE_DUPLICATED", { copyName: `Copy of ${source.name}`.slice(0, MAX_NAME_LENGTH) }, user.id)
+        await recordActivity(result.workspace.id, "WORKSPACE_CREATED", { from: source.name }, user.id)
+        revalidateWorkspaceLists()
+    }
     return result
 }
 
+// Menyimpan isi doc dan canvas workspace ini sebagai template
 export async function saveAsTemplate(
     workspaceId: string,
     name?: string
@@ -85,9 +91,10 @@ export async function saveAsTemplate(
             ...(docContent !== null && { docContent }),
             ...(canvasContent !== null && { canvasContent }),
         },
-        select: { id: true, name: true }
+        select: { id: true, name: true },
     })
 
+    await recordActivity(workspaceId, "TEMPLATE_SAVED", { name: template.name }, user.id)
     return { template }
 }
 
@@ -165,16 +172,19 @@ export async function createWorkspaceFromTemplate(
 
     let docContent = null as ReturnType<typeof asJsonInput>
     let canvasContent = null as ReturnType<typeof asJsonInput>
+    let templateName = ""
 
     const builtin = findBuiltinTemplate(templateId)
     if (builtin) {
         docContent = builtin.doc as unknown as ReturnType<typeof asJsonInput>
+        templateName = builtin.name
     } else {
         const template = await prisma.workspaceTemplate.findFirst({
             where: { id: templateId, ...templateScope(orgId, user.id) },
-            select: { docContent: true, canvasContent: true },
+            select: { name: true, docContent: true, canvasContent: true },
         })
         if (!template) throw new Error("Template not found")
+        templateName = template.name
         docContent = asJsonInput(template.docContent)
         canvasContent = asJsonInput(template.canvasContent)
     }
@@ -190,6 +200,10 @@ export async function createWorkspaceFromTemplate(
         unlimited: unlimitedWorkspaces
     })
 
-    if ("workspace" in result) revalidateWorkspaceLists()
+
+    if ("workspace" in result) {
+        await recordActivity(result.workspace.id, "WORKSPACE_CREATED", { template: templateName }, user.id)
+        revalidateWorkspaceLists()
+    }
     return result
 }
