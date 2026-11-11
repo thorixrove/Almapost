@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Bell } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { getNotifications, markNotificationsAsRead, type NotificationListItem } from "@/actions/notification";
+import type { NotificationListItem } from "@/actions/notification";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -14,6 +14,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const REFRESH_MS = 5 * 60 * 1000
+const FIRST_LOAD_DELAY_MS = 1500
+
+async function fetchNotifications(): Promise<NotificationListItem[]> {
+    const res = await fetch("/api/notifications", { cache: "no-store" })
+    if (!res.ok) throw new Error("Gagal memuat notifikasi")
+    return res.json()
+}
+
+async function postMarkRead(items?: { source: "notification" | "mention"; id: string }[]) {
+    const res = await fetch("/api/notifications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items })
+    })
+    if (!res.ok) throw new Error("Gagal menandai notifikasi")
+}
 
 export function NotificationsBell() {
     const [items, setItems] = useState<NotificationListItem[]>([])
@@ -21,12 +37,13 @@ export function NotificationsBell() {
     useEffect(() => {
         const load = () => {
             if (document.visibilityState !== "visible") return
-            getNotifications().then(setItems).catch(() => { })
+            fetchNotifications().then(setItems).catch(() => { })
         }
-        load()
+        const first = setTimeout(load, FIRST_LOAD_DELAY_MS)
         const interval = setInterval(load, REFRESH_MS)
         document.addEventListener("visibilitychange", load)
         return () => {
+            clearTimeout(first)
             clearInterval(interval)
             document.removeEventListener("visibilitychange", load)
         }
@@ -37,8 +54,8 @@ export function NotificationsBell() {
     const markRead = (targets?: NotificationListItem[]) => {
         const keys = targets && new Set(targets.map((t) => t.key))
         setItems((current) => current.map((item) => (!keys || keys.has(item.key) ? { ...item, unread: false } : item)))
-        markNotificationsAsRead(targets?.map(({ source, id }) => ({ source, id }))).catch(() =>
-            getNotifications().then(setItems).catch(() => { })
+        postMarkRead(targets?.map(({ source, id }) => ({ source, id }))).catch(() =>
+            fetchNotifications().then(setItems).catch(() => { })
         )
     }
 
