@@ -14,6 +14,7 @@ import { useWorkspaceEditors } from "@/components/WorkspaceEditorsContext";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { splitBody } from "@/lib/comment-body";
+import { announceCommentsRead } from "@/lib/notification-events";
 import { formatDistanceToNow } from "date-fns";
 import { MessageSquare, Pin, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -27,6 +28,31 @@ const SUMMARY_MS = 2 * 60 * 1000;
 type Loaded = Awaited<ReturnType<typeof loadComments>>;
 type Anchor = { type: "BLOCK" | "SHAPE"; id: string; label: string };
 
+let tempCounter = 0
+function buildTemptComment(input: {
+    meId?: string
+    meName?: string
+    body: string
+    parentId: string | null
+    pinned: Anchor | null
+}): CommentView {
+    tempCounter += 1
+    return {
+        id: `pending-${tempCounter}`,
+        parentId: input.parentId,
+        body: input.body,
+        anchorType: input.pinned?.type ?? null,
+        anchorId: input.pinned?.id ?? null,
+        resolvedAt: null,
+        createdAt: new Date(),
+        editedAt: null,
+        author: { id: input.meId ?? "", name: input.meName ?? "You", imageUrl: null },
+        unreadMention: false,
+        canEdit: false,
+        canDelete: false,
+    }
+}
+
 const errorMessage = (error: unknown, fallback: string) => (error instanceof Error ? error.message : fallback);
 
 export function CommentPanel({ workspaceId }: { workspaceId: string }) {
@@ -39,19 +65,78 @@ export function CommentPanel({ workspaceId }: { workspaceId: string }) {
     const [replyingTo, setReplyingTo] = useState<string | null>(null);
     const [editingId, setEditingId] = useState<string | null>(null);
 
+
     const [confirmingId, setConfirmingId] = useState<string | null>(null);
+    // Text of a reply or edit that failed to send, so reopening its box brings the text back.
+    const [drafts, setDrafts] = useState<Record<string, string>>({});
     const listRef = useRef<HTMLDivElement>(null);
+    // How many of our own changes are still on their way to the server.
+    const inflight = useRef(0);
 
     const refresh = useCallback(async () => {
         try {
-            setData(await loadComments(workspaceId))
+            const result = await loadComments(workspaceId)
+            // An older list from the server would undo a change that is still on its way, on screen.
+            if (inflight.current > 0) return
+            const hasUnread = result.comment.some((comment: CommentView) => comment.unreadMention)
+            // Having the panel open counts as reading, so the "Mentioned you" labels go away at once.
+            setData(
+                hasUnread
+                    ? { ...result, comment: result.comment.map((c: CommentView) => (c.unreadMention ? { ...c, unreadMention: false } : c)) }
+                    : result
+            )
+            if (hasUnread) {
+                markCommentsRead(workspaceId).catch(() => { })
+                announceCommentsRead(workspaceId)
+            }
         } catch (error) {
             toast.error(errorMessage(error, "Couldn't load comment"))
         }
     }, [workspaceId])
 
+    // Runs a server change; once none are left in flight, the list is re-read quietly in the background.
+    const track = async <T,>(work: () => Promise<T>) => {
+        inflight.current += 1
+        try {
+            return await work()
+        } finally {
+            inflight.current -= 1
+            if (inflight.current === 0) void refresh()
+        }
+    }
+
+    const patchLocal = (id: string, patch: Partial<CommentView>) =>
+        setData((current) =>
+            current && { ...current, comment: current.comment.map((c: CommentView) => (c.id === id ? { ...c, ...patch } : c)) }
+        )
+
+    const dropLocal = (id: string) =>
+        setData((current) => current && { ...current, comment: current.comment.filter((c: CommentView) => c.id !== id) })
+
+    const clearDraft = (id: string) =>
+        setDrafts((current) => {
+            if (!(id in current)) return current
+            const rest = { ...current }
+            delete rest[id]
+            return rest
+        })
+
+    const makeTemp = (body: string, parentId: string | null, pinned: Anchor | null) =>
+        buildTemptComment({ meId: data?.meId, meName: data?.meName, body, parentId, pinned })
+
+    const addLocal = (temp: CommentView) =>
+        setData((current) => {
+            if (!current) return current
+            // A reply reopens its thread on the server, so do the same here.
+            const comments = temp.parentId
+                ? current.comment.map((c: CommentView) => (c.id === temp.parentId ? { ...c, resolvedAt: null } : c))
+                : current.comment
+            return { ...current, comment: [...comments, temp] }
+        })
+
     useEffect(() => {
         if (open) return
+
         const load = () => {
             if (document.visibilityState !== "visible") return
             getCommentSummary(workspaceId).then(setSummary).catch(() => { })
@@ -73,10 +158,13 @@ export function CommentPanel({ workspaceId }: { workspaceId: string }) {
 
     const openPanel = () => {
         setOpen(true)
+        // Clear the badges right away; the server catches up in the background.
+        setSummary((current) => (current ? { ...current, unreadMention: 0 } : current))
+        announceCommentsRead(workspaceId)
         void refresh()
-        markCommentsRead(workspaceId)
-            .then(() => setSummary((current) => (current ? { ...current, unreadMention: 0 } : current)))
-            .catch(() => { })
+        markCommentsRead(workspaceId).catch(() => {
+            getCommentSummary(workspaceId).then(setSummary).catch(() => { })
+        })
     }
 
 
@@ -137,35 +225,53 @@ export function CommentPanel({ workspaceId }: { workspaceId: string }) {
         else toast.info(docEditor ? "That block no longer exists." : "Open the Document or Both view to see this block.")
     }
 
+
     const submitThreads = async (body: string) => {
+        const pinned = anchor
+        const temp = makeTemp(body, null, pinned)
+        addLocal(temp)
+        setAnchor(null)
+        setFilter("open")
+        requestAnimationFrame(() => listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" }))
         try {
-            await postComment(workspaceId, body, anchor ? { anchor: { type: anchor.type, id: anchor.id } } : undefined)
-            setAnchor(null)
-            setFilter("open")
-            await refresh()
-            requestAnimationFrame(() => listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" }))
+            const created = await track(() =>
+                postComment(workspaceId, body, pinned ? { anchor: { type: pinned.type, id: pinned.id } } : undefined)
+            )
+            patchLocal(temp.id, { id: created.id, canEdit: true, canDelete: true })
         } catch (error) {
-            toast.error(errorMessage(error, "Couln't post comment"))
+            dropLocal(temp.id)
+            setAnchor(pinned)
+            toast.error(errorMessage(error, "Couldn't post comment"))
+            throw error
         }
     }
 
     const submitReply = (parentId: string) => async (body: string) => {
+        const temp = makeTemp(body, parentId, null)
+        addLocal(temp)
+        setReplyingTo(null)
         try {
-            await postComment(workspaceId, body, { parentId })
-            setReplyingTo(null)
-            await refresh()
+            const created = await track(() => postComment(workspaceId, body, { parentId }))
+            patchLocal(temp.id, { id: created.id, canEdit: true, canDelete: true })
         } catch (error) {
+            dropLocal(temp.id)
+            setDrafts((current) => ({ ...current, [parentId]: body }))
+            setReplyingTo(parentId)
             toast.error(errorMessage(error, "Couldn't post reply"))
             throw error
         }
     }
 
     const submitEdit = (commentId: string) => async (body: string) => {
+        const previous = data?.comment.find((c: CommentView) => c.id === commentId)
+        patchLocal(commentId, { body, editedAt: new Date() })
+        setEditingId(null)
         try {
-            await editComment(workspaceId, commentId, body)
-            setEditingId(null)
-            await refresh()
+            await track(() => editComment(workspaceId, commentId, body))
         } catch (error) {
+            if (previous) patchLocal(commentId, { body: previous.body, editedAt: previous.editedAt })
+            setDrafts((current) => ({ ...current, [commentId]: body }))
+            setEditingId(commentId)
             toast.error(errorMessage(error, "Couldn't save changes"))
             throw error
         }
@@ -177,19 +283,26 @@ export function CommentPanel({ workspaceId }: { workspaceId: string }) {
             return
         }
         setConfirmingId(null)
+        // Gone from the screen at once (a thread takes its replies with it); put back if it fails.
+        const snapshot = data
+        setData((current) =>
+            current && { ...current, comment: current.comment.filter((c: CommentView) => c.id !== comment.id && c.parentId !== comment.id) }
+        )
         try {
-            await removeComment(workspaceId, comment.id)
-            await refresh
+            await track(() => removeComment(workspaceId, comment.id))
         } catch (error) {
-            toast.error(errorMessage(error, "Coulddn't delete comment"))
+            setData(snapshot)
+            toast.error(errorMessage(error, "Couldn't delete comment"))
         }
     }
 
     const toggleResolved = async (root: CommentView) => {
+        const wasResolvedAt = root.resolvedAt
+        patchLocal(root.id, { resolvedAt: wasResolvedAt ? null : new Date() })
         try {
-            await resolveComment(workspaceId, root.id, !root.resolvedAt)
-            await refresh()
+            await track(() => resolveComment(workspaceId, root.id, !wasResolvedAt))
         } catch (error) {
+            patchLocal(root.id, { resolvedAt: wasResolvedAt })
             toast.error(errorMessage(error, "Couldn't update thread"))
         }
     }
@@ -207,14 +320,15 @@ export function CommentPanel({ workspaceId }: { workspaceId: string }) {
 
     const renderComment = (comment: CommentView, isRoot: boolean) => {
         const isEditing = editingId === comment.id
+        const isPending = String(comment.id).startsWith("pending-")
 
         return (
             <div key={comment.id} className="space-y-1">
                 <div className="flex flex-wrap items-center gap-x-2 text-xs">
                     <span className="font-medium">{comment.author.name}</span>
                     <span className="text-muted-foreground">
-                        {formatDistanceToNow(comment.createdAt, { addSuffix: true })}
-                        {comment.editedAt ? " · edited" : ""}
+                        {isPending ? "Sending…" : formatDistanceToNow(comment.createdAt, { addSuffix: true })}
+                        {comment.editedAt && !isPending ? " · edited" : ""}
                     </span>
                     {comment.unreadMention && <Badge className="h-4 px-1.5 text-[10px]">Mentioned you</Badge>}
                 </div>
@@ -222,12 +336,15 @@ export function CommentPanel({ workspaceId }: { workspaceId: string }) {
                 {isEditing ? (
                     <CommentComposer
                         members={members}
-                        initialBody={comment.body}
+                        initialBody={drafts[comment.id as string] ?? comment.body}
                         placeholder="Edit comment"
                         submitLabel="Save"
                         autoFocus
                         onSubmit={submitEdit(comment.id)}
-                        onCancel={() => setEditingId(null)}
+                        onCancel={() => {
+                            clearDraft(comment.id as string)
+                            setEditingId(null)
+                        }}
                     />
                 ) : (
                     <p className="text-sm break-words whitespace-pre-wrap">
@@ -258,10 +375,13 @@ export function CommentPanel({ workspaceId }: { workspaceId: string }) {
                     </button>
                 )}
 
-                {!isEditing && (
+                {!isEditing && !isPending && (
                     <div className="flex flex-wrap gap-x-3 text-[11px] text-muted-foreground">
                         {isRoot && (
-                            <button type="button" className="hover:text-foreground" onClick={() => setReplyingTo(comment.id)}>
+                            <button type="button" className="hover:text-foreground" onClick={() => {
+                                clearDraft(comment.id as string)
+                                setReplyingTo(comment.id as string)
+                            }}>
                                 Reply
                             </button>
                         )}
@@ -271,7 +391,10 @@ export function CommentPanel({ workspaceId }: { workspaceId: string }) {
                             </button>
                         )}
                         {comment.canEdit && (
-                            <button type="button" className="hover:text-foreground" onClick={() => setEditingId(comment.id)}>
+                            <button type="button" className="hover:text-foreground" onClick={() => {
+                                clearDraft(comment.id as string)
+                                setEditingId(comment.id as string)
+                            }}>
                                 Edit
                             </button>
                         )}
@@ -334,11 +457,15 @@ export function CommentPanel({ workspaceId }: { workspaceId: string }) {
                                     {replyingTo === root.id && (
                                         <CommentComposer
                                             members={members}
+                                            initialBody={drafts[root.id as string] ?? ""}
                                             placeholder="Reply"
                                             submitLabel="Reply"
                                             autoFocus
                                             onSubmit={submitReply(root.id)}
-                                            onCancel={() => setReplyingTo(null)}
+                                            onCancel={() => {
+                                                clearDraft(root.id as string)
+                                                setReplyingTo(null)
+                                            }}
                                         />
                                     )}
                                 </div>
