@@ -11,6 +11,7 @@ import { WorkspaceBoard } from "./_components/WorkspaceBoard";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { canEditRole, resolveWorkspaceRole } from "@/lib/workspace-role";
+import { trashCutoff } from "@/lib/trash";
 
 export default async function WorkspacesPage({
   searchParams,
@@ -21,22 +22,24 @@ export default async function WorkspacesPage({
   if (!user) redirect("/sign-in")
 
   const { query, statuses } = parseFilterParams(await searchParams)
+  const { orgId, orgRole } = await auth()
 
-  const {orgId, orgRole} = await auth()
-  const {orgName, where} = await getWorkspaceScope(user.id)
-  const rows = await prisma.workspace.findMany({
+  const { orgName, where, trashWhere } = await getWorkspaceScope(user.id)
+  const [rows, trashCount] = await Promise.all([prisma.workspace.findMany({
     where,
     select: {
       ...workspaceCardSelect,
       position: true,
       creatorId: true,
       memberRole: true,
-      access: {where: {userId: user.id}, select: {role: true}},
+      access: { where: { userId: user.id }, select: { role: true } },
     },
-    orderBy: {position: "asc"}
-  })
+    orderBy: { position: "asc" }
+  }),
+  prisma.workspace.count({ where: { ...trashWhere, deletedAt: { gte: trashCutoff() } } })
+  ])
 
-  const workspaces = rows.map(({ creatorId, memberRole, access, ...workspace}) => ({
+  const workspaces = rows.map(({ creatorId, memberRole, access, ...workspace }) => ({
     ...workspace,
     canEdit: canEditRole(
       resolveWorkspaceRole({
@@ -59,9 +62,20 @@ export default async function WorkspacesPage({
         <div className="flex items-center gap-2">
           <Button asChild variant="ghost" className="gap-2">
             <Link href="/workspaces/trash">
+
               <Trash2 className="size-4" />
               Trash
+              {trashCount > 0 && (
+                <span
+                  aria-label={`${trashCount} in trash`}
+                  className="rounded-full bg-primary px-1.5 text-xs font-medium text-primary-foreground"
+                >
+                  {trashCount}
+                </span>
+              )}
             </Link>
+
+
           </Button>
           <WorkspaceDialog
             trigger={

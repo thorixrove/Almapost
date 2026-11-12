@@ -1,5 +1,5 @@
-import type { PrismaClient } from "@/lib/generated/prisma/client";
 import { toPlainText } from "@/lib/comment-body";
+import type { PrismaClient } from "@/lib/generated/prisma/client";
 
 export type NotificationType = "COMMENT_REPLY" | "THREAD_RESOLVED" | "ROLE_CHANGED" | "WORKSPACE_TRASHED"
 
@@ -56,6 +56,7 @@ export type NotificationItem = {
     // "n:<id>" untuk tabel Notification, "m:<commentId>" untuk mention.
     key: string
     source: "notification" | "mention"
+    type: NotificationType | "MENTION"
     id: string
     workspaceId: string
     workspaceName: string
@@ -112,6 +113,7 @@ export async function listNotifications(db: PrismaClient, input: { userId: strin
         ...notifications.map((n) => ({
             key: `n:${n.id}`,
             source: "notification" as const,
+            type: n.type as NotificationType,
             id: n.id,
             workspaceId: n.workspaceId,
             workspaceName: n.workspace.name,
@@ -125,6 +127,7 @@ export async function listNotifications(db: PrismaClient, input: { userId: strin
         ...mentions.map((m) => ({
             key: `m:${m.comment.id}`,
             source: "mention" as const,
+            type: "MENTION" as const,
             id: m.comment.id,
             workspaceId: m.comment.workspaceId,
             workspaceName: m.comment.workspace.name,
@@ -163,3 +166,16 @@ export async function markNotificationsRead(
             : null
     ])
 }
+
+export async function markCommentNotificationsRead(db: PrismaClient, input: { userId: string; workspaceId: string }) {
+    await db.notification.updateMany({
+        where: {
+            userId: input.userId,
+            workspaceId: input.workspaceId,
+            readAt: null,
+            type: { in: ["COMMENT_REPLY", "THREAD_RESOLVED"] }
+        },
+        data: { readAt: new Date() }
+    })
+}
+

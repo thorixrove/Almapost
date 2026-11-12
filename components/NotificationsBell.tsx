@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Bell } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import type { NotificationListItem } from "@/actions/notification";
+import { COMMENTS_READ_EVENT } from "@/lib/notification-events";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -48,6 +49,20 @@ export function NotificationsBell() {
             document.removeEventListener("visibilitychange", load)
         }
     }, [])
+
+    useEffect(() => {
+        const onCommentRead = (event: Event) => {
+            const { workspaceId } = (event as CustomEvent<{ workspaceId: string }>).detail
+            setItems((current) =>
+                current.map((item) =>
+                    item.workspaceId === workspaceId &&
+                        (item.type === "MENTION" || item.type === "COMMENT_REPLY" || item.type === "THREAD_RESOLVED")
+                        ? { ...item, unread: false }
+                        : item
+                )
+            )
+        }
+    })
 
     const unreadCount = items.filter((item) => item.unread).length
 

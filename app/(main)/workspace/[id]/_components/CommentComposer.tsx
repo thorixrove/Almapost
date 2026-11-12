@@ -38,7 +38,6 @@ export function CommentComposer({
     const [highlight, setHighlight] = useState(0);
 
     const [dismissedAt, setDismissedAt] = useState<number | null>(null);
-    const [busy, setBusy] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const query = activeMentionQuery(text, caret);
@@ -46,7 +45,7 @@ export function CommentComposer({
     const activeIndex = Math.min(highlight, Math.max(suggestions.length - 1, 0));
 
     const tooLong = text.length > MAX_COMMENT_LENGTH;
-    const canSubmit = !busy && text.trim().length > 0 && !tooLong;
+    const canSubmit = text.trim().length > 0 && !tooLong;
 
     const choose = (member: Mentionable) => {
         if (!query) return
@@ -65,15 +64,18 @@ export function CommentComposer({
 
     const submit = async () => {
         if (!canSubmit) return
-        setBusy(true)
+        const body = encodeMentions(text.trim(), picked)
+        const previous = { text, picked, caret }
+
+        setText("")
+        setPicked([])
+        setCaret(0)
         try {
-            await onSubmit(encodeMentions(text.trim(), picked))
-            setText("")
-            setPicked([])
-            setCaret(0)
+            await onSubmit(body)
         } catch {
-        } finally {
-            setBusy(false)
+            setText((current) => (current === "" ? previous.text : current))
+            setPicked((current) => (current.length === 0 ? previous.picked : current))
+            setCaret(previous.caret)
         }
     }
 
@@ -96,7 +98,7 @@ export function CommentComposer({
                 return
             }
         }
-        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+        if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
             e.preventDefault()
             void submit()
         }
@@ -153,16 +155,16 @@ export function CommentComposer({
 
             <div className="flex items-center justify-between gap-2">
                 <span className={`text-[11px] ${tooLong ? "text-destructive" : "text-muted-foreground"}`}>
-                    {text.length > MAX_COMMENT_LENGTH * 0.8 ? `${text.length}/${MAX_COMMENT_LENGTH}` : "Ctrl/Cmd+Enter to send"}
+                    {text.length > MAX_COMMENT_LENGTH * 0.8 ? `${text.length}/${MAX_COMMENT_LENGTH}` : "Enter to send · Shift+Enter for a new line"}
                 </span>
                 <div className="flex gap-1.5">
                     {onCancel && (
-                        <Button size="sm" variant="ghost" className="h-7" onClick={onCancel} disabled={busy}>
+                        <Button size="sm" variant="ghost" className="h-7" onClick={onCancel}>
                             Cancel
                         </Button>
                     )}
                     <Button size="sm" className="h-7" onClick={submit} disabled={!canSubmit}>
-                        {busy ? "Sending…" : submitLabel}
+                        {submitLabel}
                     </Button>
                 </div>
             </div>
