@@ -22,6 +22,7 @@ import {
   type SurfaceSnapshot,
   type TurnSummary,
 } from "@/lib/agent-turn";
+import { RATE_LIMIT_ERROR } from "@/lib/rate-limit";
 
 type Editors = { canvasEditor: Editor | null; docEditor: BlockNoteEditor | null };
 
@@ -107,6 +108,10 @@ export function useWorkspaceAgentChat(workspaceId: string, editors: Editors) {
       finishTurn(event)
     },
     onError: (error) => {
+      if (error.message.includes(RATE_LIMIT_ERROR)) {
+        toast.error("Terlalu banyak permintaan. Tunggu sebentar lalu coba lagi.")
+        return
+      }
       if (!error.message.includes(PROMPT_LIMIT_ERROR)) return;
       refreshPromptUsage();
       openUpgrade(UPGRADE_REASONS.prompts);

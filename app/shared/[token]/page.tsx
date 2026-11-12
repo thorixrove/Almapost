@@ -8,7 +8,8 @@ import { getEntitlements, workspaceOwnerId, workspaceOwnerSelect } from "@/lib/b
 import { Badge } from "@/components/ui/badge";
 import { DocViewer } from "@/components/DocEditorLoader";
 import { CanvasViewer } from "./_components/CanvasViewer";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
+import { ResponsivePanelGroup } from "@/components/ResponsivePanelGroup";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
@@ -34,13 +35,13 @@ export default async function SharedPage({ params }: PageProps<"/shared/[token]"
                 <Link href="/" className="font-heading text-lg font-bold tracking-tight transition-opacity hover:opacity-80">
                     Almapost
                 </Link>
-                <span className="text-sm font-medium">{workspace.name}</span>
+                <span className="min-w-0 text-sm font-medium">{workspace.name}</span>
                 <Badge variant="outline" className="border-white/15 text-xs font-normal text-muted-foreground">
                     View only
                 </Badge>
             </header>
 
-            <ResizablePanelGroup orientation="horizontal" className="flex-1">
+            <ResponsivePanelGroup className="flex-1">
                 <ResizablePanel defaultSize={40} minSize={20}>
                     <div className="h-full overflow-y-auto pt-6">
                         <DocViewer content={workspace.doc?.content as Block[] | null} />
@@ -50,7 +51,7 @@ export default async function SharedPage({ params }: PageProps<"/shared/[token]"
                 <ResizablePanel defaultSize={60} minSize={20}>
                     <CanvasViewer snapshot={workspace.canvas?.content as TLEditorSnapshot | null} />
                 </ResizablePanel>
-            </ResizablePanelGroup>
+            </ResponsivePanelGroup>
         </div>
     )
 }

@@ -16,12 +16,13 @@ import { EditableWorkspaceName } from "./_components/EditableWorkspaceName";
 import { CanvasEditor } from "./_components/CanvasEditorLoader"
 import { AgentToggleButton } from "./_components/AgentToggleButton";
 import { ShareDialog } from "./_components/ShareDialog";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { VersionHistoryDialog } from "./_components/VersionHistoryDialog"
 import { CommentPanel } from "./_components/CommentsPanel";
 import { WorkspaceRoleProvider } from "@/components/WorkspaceRoleContext";
 import { AccessDialog } from "./_components/AccessDialog";
 import { ActivityDialog } from "./_components/ActivityDialog";
+import { ResponsivePanelGroup } from "@/components/ResponsivePanelGroup";
 
 type ViewMode = "doc" | "canvas" | "both";
 
@@ -64,8 +65,8 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
         <WorkspaceEditorsProvider>
             <WorkspaceRoleProvider role={role}>
                 <div className="flex h-dvh flex-col overflow-hidden">
-                    <header className="flex h-14 shrink-0 items-center border-b border-white/6 bg-background px-4">
-                        <div className="flex flex-1 items-center gap-3">
+                    <header className="flex h-14 shrink-0 items-center gap-2 border-b border-white/6 bg-background px-2 sm:px-4">
+                        <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
                             <Link
                                 href="/dashboard"
                                 aria-label="Kembali ke dashboard"
@@ -80,7 +81,7 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
                             )}
                         </div>
 
-                        <div className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/3 p-1">
+                        <div className="flex shrink-0 items-center gap-1 rounded-lg border border-white/10 bg-white/3 p-1">
                             {(["doc", "both", "canvas"] as const).map((mode) => (
                                 <Button
                                     key={mode}
@@ -96,7 +97,7 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
                             ))}
                         </div>
 
-                        <div className="flex flex-1 items-center justify-end gap-2">
+                        <div className="flex flex-1 items-center justify-end gap-2 overflow-x-auto">
                             {!canEdit && <Badge variant="secondary">View Only</Badge>}
                             <PlanButton upgradeOnlyWhenOut />
                             {canEdit && <VersionHistoryDialog workspaceId={id} />}
@@ -118,7 +119,7 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
                     </header>
 
                     {/* key gives each view a fresh panel group, so an old layout isn't applied to new panels */}
-                    <ResizablePanelGroup key={view} orientation="horizontal" className="flex-1">
+                    <ResponsivePanelGroup key={view} className="flex-1">
                         {showDoc && (
                             <ResizablePanel defaultSize={35} minSize={20}>
                                 <DocEditor
@@ -140,7 +141,7 @@ export default async function WorkspacePage({ params, searchParams }: PageProps<
                                 />
                             </ResizablePanel>
                         )}
-                    </ResizablePanelGroup>
+                    </ResponsivePanelGroup >
                 </div>
             </WorkspaceRoleProvider>
         </WorkspaceEditorsProvider>

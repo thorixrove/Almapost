@@ -1,0 +1,48 @@
+npm error code ERESOLVE
+npm error ERESOLVE could not resolve
+npm error
+npm error While resolving: vitest@5.1.0
+npm error Found: @types/node@20.19.43
+npm error node_modules/@types/node
+npm error   @types/node@"*" from @jest/types@29.6.3
+npm error   node_modules/@jest/types
+npm error     @jest/types@"^29.6.3" from jest-util@29.7.0
+npm error     node_modules/jest-util
+npm error       jest-util@"^29.7.0" from jest-worker@29.7.0
+npm error       node_modules/jest-worker
+npm error         jest-worker@"^29.7.0" from metro@0.87.1
+npm error         node_modules/metro
+npm error         1 more (metro-file-map)
+npm error     @jest/types@"^29.6.3" from jest-validate@29.7.0
+npm error     node_modules/jest-validate
+npm error       jest-validate@"^29.7.0" from metro-config@0.87.1
+npm error       node_modules/metro-config
+npm error         metro-config@"0.87.1" from metro@0.87.1
+npm error   @types/node@"*" from @types/connect@3.4.38
+npm error   node_modules/@types/connect
+npm error     @types/connect@"^3.4.33" from jayson@4.3.0
+npm error     node_modules/jayson
+npm error       jayson@"^4.3.0" from @solana/web3.js@1.99.0
+npm error       node_modules/@solana/web3.js
+npm error         peer @solana/web3.js@"^1.98.4" from @solana-mobile/mobile-wallet-adapter-protocol-web3js@2.3.0
+npm error         node_modules/@solana-mobile/mobile-wallet-adapter-protocol-web3js
+npm error         4 more (@solana/wallet-adapter-base, ...)
+npm error   8 more (@types/pg, @types/ws, jest-util, jest-worker, mysql2, ...)
+npm error
+npm error Could not resolve dependency:
+npm error peerOptional @types/node@"^22.0.0 || >=24.0.0" from vitest@5.1.0
+npm error node_modules/vitest
+npm error   dev vitest@"^5.1.0" from the root project
+npm error
+npm error Conflicting peer dependency: @types/node@26.6.6
+npm error node_modules/@types/node
+npm error   peerOptional @types/node@"^22.0.0 || >=24.0.0" from vitest@5.1.0
+npm error   node_modules/vitest
+npm error     dev vitest@"^5.1.0" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry this command with --force or --legacy-peer-deps to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error C:\Users\Asus\AppData\Local\npm-cache\_logs\2026-11-11T20_52_32_305Z-eresolve-report.txt
+npm error A complete log of this run can be found in: C:\Users\Asus\AppData\Local\npm-cache\_logs\2026-11-11T20_52_32_305Z-debug-0.log

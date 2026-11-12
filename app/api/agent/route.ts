@@ -3,9 +3,20 @@ import { streamText, convertToModelMessages, type UIMessage } from "ai";
 import { agentToolDefs } from "@/lib/agent-tools";
 import { PROMPT_LIMIT_ERROR } from "@/lib/plan-limits";
 import { checkUser } from "@/actions/check-user";
-import { getWorkspaceRole  } from "@/lib/workspace-access";
+import { getWorkspaceRole } from "@/lib/workspace-access";
 import { canEditRole } from "@/lib/workspace-role";
 import { getPromptUsage, getWorkspaceOwnerId, recordPrompt } from "@/lib/billing";
+import { createRateLimiter, RATE_LIMIT_ERROR } from "@/lib/rate-limit";
+
+const requestLimiter = createRateLimiter(40, 60_000)
+const promptLimiter = createRateLimiter(8, 60_000)
+
+function rateLimited(retryAfterSeconds: number) {
+  return Response.json(
+    { error: RATE_LIMIT_ERROR, retryAfter: retryAfterSeconds },
+    { status: 429, headers: { "Retry-After": String(retryAfterSeconds) } },
+  )
+}
 
 const SYSTEM_PROMPT = `You are Almapost's workspace agent. A workspace has two surfaces: a canvas (an infinite whiteboard for diagrams) and a doc (a rich-text document). You change them only by calling tools, never by describing changes in text. Never use em dashes in your replies.
 
@@ -40,6 +51,9 @@ export async function POST(req: Request) {
   const user = await checkUser();
   if (!user) return new Response("Unauthorized", { status: 401 });
 
+  const requestCheck = requestLimiter(user.id)
+  if (!requestCheck.ok) return rateLimited(requestCheck.retryAfterSeconds)
+
   const {
     messages,
     workspaceId,
@@ -52,7 +66,7 @@ export async function POST(req: Request) {
     docContext: string | null;
   } = await req.json();
 
-  const role = await  getWorkspaceRole(workspaceId)
+  const role = await getWorkspaceRole(workspaceId)
   if (!role) return new Response("Workspace not found", { status: 404 })
   if (!canEditRole(role)) return new Response("You have view-onlly accessto this workspace", { status: 403 })
 
@@ -60,7 +74,10 @@ export async function POST(req: Request) {
   // end with the agent's own message, so a prompt that draws 20 shapes still counts once.
   let ownerId: string | null = null;
   if (messages.at(-1)?.role === "user") {
+    const promptCheck = promptLimiter(user.id)
+    if (!promptCheck.ok) return rateLimited(promptCheck.retryAfterSeconds)
     ownerId = await getWorkspaceOwnerId(workspaceId);
+
     const { used, limit } = await getPromptUsage(ownerId);
     // Checked before calling Gemini, so an exhausted plan costs nothing.
     if (used >= limit) return Response.json({ error: PROMPT_LIMIT_ERROR, used, limit }, { status: 402 });
