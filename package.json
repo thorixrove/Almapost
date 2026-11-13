@@ -10,6 +10,7 @@
     "lint": "eslint",
     "postinstall": "prisma generate",
     "seed": "tsx --env-file=.env prisma/seed.ts",
+    "migrate:assets": "tsx --env-file=.env scripts/migrate-canvas-assets.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },
