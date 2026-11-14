@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { getWorkspaceScope } from "@/lib/workspace-scope";
 import { TRASH_RETENTION_DAYS, trashCutoff } from "@/lib/trash";
 import { TrashList } from "./_components/TrashList";
+import { deleteWorkspaceAssets } from "@/lib/asset-storage";
 
 export default async function TrashPage() {
     const user = await checkUser()
@@ -15,7 +16,11 @@ export default async function TrashPage() {
     const { userId, orgId, orgRole } = await auth()
     const { orgName, trashWhere } = await getWorkspaceScope(user.id)
 
-    await prisma.workspace.deleteMany({ where: { ...trashWhere, deletedAt: { lt: trashCutoff() } } })
+
+    const expiredWhere = { ...trashWhere, deletedAt: { lt: trashCutoff()}}
+    const expired = await prisma.workspace.findMany({ where: expiredWhere, select: { id: true}})
+    await prisma.workspace.deleteMany({ where: expiredWhere})
+    await deleteWorkspaceAssets(expired.map((workspace) => workspace.id))
 
     const rows = await prisma.workspace.findMany({
         where: trashWhere,

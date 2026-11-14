@@ -49,7 +49,7 @@ export default async function SharedPage({ params }: PageProps<"/shared/[token]"
                 </ResizablePanel>
                 <ResizableHandle withHandle />
                 <ResizablePanel defaultSize={60} minSize={20}>
-                    <CanvasViewer snapshot={workspace.canvas?.content as TLEditorSnapshot | null} />
+                    <CanvasViewer snapshot={workspace.canvas?.content as TLEditorSnapshot | null} shareToken={token}/>
                 </ResizablePanel>
             </ResponsivePanelGroup>
         </div>

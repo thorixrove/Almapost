@@ -1,3 +1,4 @@
+
 export const TRASH_RETENTION_DAYS = 30
 
 const DAY_MS = 24 * 60 * 60 * 1000

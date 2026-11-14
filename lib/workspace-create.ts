@@ -1,7 +1,7 @@
 import type { Prisma, PrismaClient } from "@/lib/generated/prisma/client";
 import { scopeWhere } from "@/lib/workspace-scope";
 import { FREE_WORKSPACE_LIMIT } from "@/lib/plan-limits";
-
+import { cloneCanvasAssets } from "@/lib/asset-storage";
 
 export function asJsonInput(value: Prisma.JsonValue | null | undefined) {
     return (value ?? null) as Prisma.InputJsonValue | null
@@ -46,5 +46,11 @@ export async function createWorkspaceWithContent(
         },
         select: { id: true },
     })
+    if (input.canvasContent != null) {
+        const canvasContent = await cloneCanvasAssets(input.canvasContent, workspace.id)
+        if (canvasContent !== input.canvasContent) {
+            await db.canvas.update({ where: {workspaceId: workspace.id}, data: { content: canvasContent}})
+        }
+    }
     return { workspace }
 }

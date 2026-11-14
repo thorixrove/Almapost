@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { getEntitlements, workspaceOwnerId, workspaceOwnerSelect } from "@/lib/billing";
 import { FREE_WORKSPACE_LIMIT, type LimitError } from "@/lib/plan-limits";
 import { recordActivity } from "@/lib/actor";
+import { deleteWorkspaceAssets } from "@/lib/asset-storage";
 
 function revalidateTrashViews() {
     revalidatePath("/dashboard")
@@ -63,5 +64,6 @@ export async function purgeWorkspace(workspaceId: string) {
     if (!workspace?.deletedAt) throw new Error("Only workspaces in the trash can be deleted permanently")
 
     await prisma.workspace.delete({ where: { id: workspaceId } })
+    await deleteWorkspaceAssets([workspaceId])
     revalidateTrashViews()
 }

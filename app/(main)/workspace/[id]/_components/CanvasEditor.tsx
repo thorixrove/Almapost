@@ -13,11 +13,11 @@ import {
   UserRecordType,
   DefaultToolbar,
   DefaultToolbarContent,
-  inlineBase64AssetStore,
   defaultShapeUtils,
   defaultBindingUtils,
   type Editor,
   type TLEditorSnapshot,
+  type TLAssetStore,
   type TLComponents,
 } from "tldraw";
 import { useSync, useSyncDemo } from "@tldraw/sync";
@@ -30,6 +30,9 @@ import { snapArrowBindingToRow } from "@/components/EntityTable/snapArrowToRow";
 import { useWorkspaceEditors } from "@/components/WorkspaceEditorsContext";
 import { useWorkspaceRole } from "@/components/WorkspaceRoleContext";
 import { colorForUser } from "@/lib/utils";
+import { ALLOWED_ASSET_TYPES } from "@/lib/asset-config";
+import { createWorkspaceAssetStore } from "@/lib/canvas-asset-store";
+import { migrateInlineAssets } from "@/lib/migrate-inline-assets";
 
 const SAVE_DEBOUNCE_MS = 1000;
 
@@ -43,14 +46,18 @@ const SYNC_URL = process.env.NEXT_PUBLIC_TLDRAW_SYNC_URL;
 // a new array on every render would make useSync rebuild the store in a loop.
 const syncShapeUtils = [...defaultShapeUtils, ...shapeUtils];
 
-type SyncOptions = { roomId: string; users?: Parameters<typeof useSyncDemo>[0]["users"] };
 
+
+
+type SyncOptions = { roomId: string; assets: TLAssetStore; users?: Parameters<typeof useSyncDemo>[0]["users"] };
 // Chosen once at load, so it's always the same hook. Images are stored inside the room.
+const mediaProps = { acceptedImageMimeTypes: ALLOWED_ASSET_TYPES, acceptedVideoMimeTypes: []} as const
+
 const useCanvasSync = SYNC_URL
-  ? ({ roomId, users }: SyncOptions) =>
+  ? ({ roomId, users, assets }: SyncOptions) =>
     useSync({
       uri: `${SYNC_URL}/connect/${roomId}`,
-      assets: inlineBase64AssetStore,
+      assets,
       shapeUtils: syncShapeUtils,
       bindingUtils: defaultBindingUtils,
       users,
@@ -124,6 +131,8 @@ function useCanvasShared(workspaceId: string, initialSnapshot: TLEditorSnapshot 
       editor.loadSnapshot(initialSnapshot);
     }
 
+    void migrateInlineAssets(editor, workspaceId)
+
     editor.store.listen(
       () => {
         if (saveTimeout.current) clearTimeout(saveTimeout.current);
@@ -166,7 +175,8 @@ function SyncedCanvas({
   onFail: () => void;
 }) {
   const { users, currentUser, handleMount } = useCanvasShared(workspaceId, initialSnapshot);
-  const store = useCanvasSync({ roomId: `almapost-${workspaceId}`, users });
+  const assets = useMemo(() => createWorkspaceAssetStore(workspaceId), [workspaceId])
+  const store = useCanvasSync({ roomId: `almapost-${workspaceId}`, users, assets });
 
   useEffect(() => {
     if (store.status === "error") {
@@ -197,6 +207,7 @@ function SyncedCanvas({
         components={components}
         colorScheme="dark"
         shapeUtils={shapeUtils}
+        {...mediaProps}
         licenseKey={process.env.NEXT_PUBLIC_TLDRAW_LICENSE_KEY}
       />
     </div>
@@ -213,15 +224,18 @@ function LocalCanvas({
   initialSnapshot: TLEditorSnapshot | null;
 }) {
   const { currentUser, handleMount } = useCanvasShared(workspaceId, initialSnapshot);
+  const assets = useMemo(() => createWorkspaceAssetStore(workspaceId), [workspaceId])
 
   return (
     <div className="isolate h-full [&_.tlui-main-toolbar--vertical]:top-4!">
       <Tldraw
         user={currentUser}
+        assets={assets}
         onMount={handleMount}
         components={components}
         colorScheme="dark"
         shapeUtils={shapeUtils}
+        {...mediaProps}
         licenseKey={process.env.NEXT_PUBLIC_TLDRAW_LICENSE_KEY}
       />
     </div>
